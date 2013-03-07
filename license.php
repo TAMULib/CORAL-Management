@@ -3,7 +3,7 @@
 
 /*
 **************************************************************************************************************************
-** CORAL Licensing Module v. 1.0
+** CORAL Management Module v. 1.0
 **
 ** Copyright (c) 2010 University of Notre Dame
 **
