@@ -500,7 +500,6 @@ switch ($_GET['action']) {
 					
 // Save the document
 
-
 					$document = new Document();
 					$document->documentID = '';
 					$document->expirationDate = '';

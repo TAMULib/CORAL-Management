@@ -149,10 +149,18 @@ $(function(){
 		 }
  });
 
-
+ //attach enter key event to new input and call add data when hit
+ $('#documentTypeID').keyup(function(e) {
+		 if(e.keyCode == 13) {
+			   doSubmitLicense();
+		 }
+ });
 
 $("#submitLicense").click(function () {
+	alert("DocumentType: " + $("#docTypeID").val());	
+	alert("Category: " + $("#licenseConsortiumID").val());
   	doSubmitLicense();
+
 });
 
 
@@ -160,9 +168,12 @@ function doSubmitLicense(){
   if (validateForm() === true) {
 	// ajax call to add/update
 	
-	$.post("ajax_processing.php?action=submitLicense", { licenseID: $("#editLicenseID").val(),description: $("#licenseDescription").val(),shortName: $("#licenseShortName").val(), organizationID: $("#licenseOrganizationID").val(), organizationName: $("#organizationName").val(), consortiumID: $("#licenseConsortiumID").val(), documentTypeID: $("#documentTypeID").val(), uploadDocument: fileName } ,
+	alert($("#docTypeID").val());
+	
+	if ($("#docTypeID").val()) {
+	$.post("ajax_processing.php?action=submitLicense", { licenseID: $("#editLicenseID").val(),description: $("#licenseDescription").val(),shortName: $("#licenseShortName").val(), organizationID: $("#licenseOrganizationID").val(), organizationName: $("#organizationName").val(), consortiumID: $("#licenseConsortiumID").val(), documentTypeID: $("#docTypeID").val(), uploadDocument: fileName } ,
 		function(data){$("#div_licenseForm").html(data);});
-
+	}
 	return false;
   
   }
@@ -193,29 +204,6 @@ function addConsortium(){
  });
 }
 
-function newType(){
-  $('#span_newType').html("<input type='text' name='newType' id='newType' class='licenseAddInput' />  <a href='javascript:addType();'>add</a>");
-
-	 //attach enter key event to new input and call add data when hit
-	 $('#span_newType').keyup(function(e) {
-
-			 if(e.keyCode == 13) {
-				   addType();
-			 }
-	 });
-}
-
-
-function addType(){
-  //add consortium to db and returns updated select box
-  $.ajax({
-	 type:       "GET",
-	 url:        "ajax_processing.php",
-	 cache:      false,
-	 data:       "action=addType&shortName=" + $("#newType").val(),
-	 success:    function(html) { $('#span_type').html(html); $('#span_newType').html("<font color='red'>Type has been added</font>"); }
- });
-}
 
 //the following are only used when interoperability with organizations module is turned off
 function newDocumentType(){
@@ -246,10 +234,18 @@ function addDocumentType(){
 //validates fields
 function validateForm (){
 	myReturn=0;
+	
 	if (!validateRequired('licenseShortName','License Name is required.')) myReturn="1";
 //	if (!validateRequired('organizationName','Provider is required.')) myReturn="1";
-	if (!validateRequired('licenseuploadDocument','File is required.')) myReturn="1";
 
+		if ($("#div_file_message").text().indexOf("successfully uploaded") > 0) {
+				$("#span_error_licenseuploadDocument").html('');
+			} else {
+				$("#span_error_licenseuploadDocument").html('File is required');
+				$("#licenseuploadDocument").focus();				
+				myReturn="1";
+			}
+	
 	if (myReturn == "1"){
 		return false;
 	}else{
@@ -304,7 +300,8 @@ new AjaxUpload('upload_button',
           if (errorMessage.size() > 0) {
             $("#div_file_message").html("<font color='red'>" + errorMessage.html() + "</font>");
           } else {
-  					$("#div_file_message").html("<img src='images/paperclip.gif'>" + fileName + " successfully uploaded.");
+  					$("#div_file_message").html("<img src='images/paperclip.gif'>" + fileName + " successfully uploaded."); 
+					$("#span_error_licenseuploadDocument").html('');
   					$("#div_uploadFile").html("<br />");
           }
 				}

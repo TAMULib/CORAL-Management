@@ -68,9 +68,10 @@ switch ($_GET['action']) {
 -->
 
 		<tr>
-		<td colspan='2'><label for="documentType" class="formText">Type:</label><br /><span id='span_error_documentTypeID' class='errorText'></span>
+		<td colspan='2'><label for="documentType" class="formText">Type:</label><br />
+		<span id='span_error_documentTypeID' class='errorText'></span>
 		<span id='span_documentType'>
-		<select name='documentTypeID' id='documentTypeID' style='width:185px;'>
+		<select name='docTypeID' id='docTypeID' style='width:185px;'>
 		<?php
 
 		$display = array();
@@ -88,11 +89,12 @@ switch ($_GET['action']) {
 		</select>
 		</span>
 		<br />
-		<span id='span_newDocumentType'><a href="javascript:newDocumentType();">add document type</a></span>
+		<span id='span_newDocumentType'><a href="javascript:newDocumentType();">add type</a></span>
 		<br />
 		</td>
 		</tr>
 
+		
 		<tr>
 		<td colspan='2'><label for="consortiumID" class="formText">Category:</label><br />
 		<span id='span_consortium'>
@@ -103,7 +105,6 @@ switch ($_GET['action']) {
 
 			?>
 			<select name='licenseConsortiumID' id='licenseConsortiumID'>
-			<option value=''></option>
 			<?php
 
 
