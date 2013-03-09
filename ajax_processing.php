@@ -71,13 +71,18 @@ switch ($_GET['action']) {
 		$document->licenseID=$_POST['licenseID'];
 		$document->documentURL=$_POST['uploadDocument'];
 
-
+		$license = new License(new NamedArguments(array('primaryKey' => $_POST['licenseID'])));		
+		$license->typeID		= $_POST['documentTypeID'];
+		
 		try {
 			$document->save();
+			$license->save();
 		} catch (Exception $e) {
 			echo $e->POSTMessage();
 		}
 
+//doug		
+		
         break;
 
 
@@ -466,7 +471,7 @@ switch ($_GET['action']) {
 				//update data
 				$license = new License(new NamedArguments(array('primaryKey' => $_POST['licenseID'])));
 				$response = "License Updated Successfully.";
-
+//doug
 			}else{
 				//add data
 				$license = new License();
@@ -496,9 +501,11 @@ switch ($_GET['action']) {
 				if ((isset($_POST['licenseID'])) && $_POST['licenseID'] != ''){
 					$licenseID = $_POST['licenseID'];
 				}else{
+				
+					// I am adding a new license so go ahead and create the document
 					$licenseID = $license->primaryKey;
 					
-// Save the document
+					// Save the document
 
 					$document = new Document();
 					$document->documentID = '';

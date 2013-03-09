@@ -60,7 +60,7 @@ if ($license->shortName){
 		<tr>
 			<td class="sidemenu">
 				<div class="sidemenuselected" style='position: relative; width: 91px'><a href='javascript:void(0)' class='showDocuments'>Documents</a></div>
-				<div class='sidemenuunselected'><a href='javascript:void(0)' class='showExpressions'>Expressions</a></div>
+				<!-- <div class='sidemenuunselected'><a href='javascript:void(0)' class='showExpressions'>Expressions</a></div> -->
 				<?php if ($displaySFX == "1"){ ?><div class='sidemenuunselected'><a href='javascript:void(0)' class='showSFXProviders'>Terms Tool</a></div><?php } ?>
 				<div class='sidemenuunselected'><a href='javascript:void(0)' class='showAttachments'>Attachments</a><br />&nbsp;<span class='span_AttachmentNumber'></span></div>
 			</td>
@@ -123,7 +123,7 @@ if ($license->shortName){
 		<tr>
 			<td class="sidemenu">
 				<div class="sidemenuunselected"><a href='javascript:void(0)' class='showDocuments'>Documents</a></div>
-				<div class='sidemenuunselected'><a href='javascript:void(0)' class='showExpressions'>Expressions</a></div>
+<!--				<div class='sidemenuunselected'><a href='javascript:void(0)' class='showExpressions'>Expressions</a></div> -->
 				<?php if ($displaySFX == "1"){ ?><div class='sidemenuunselected'><a href='javascript:void(0)' class='showSFXProviders'>Terms Tool</a></div><?php } ?>
 				<div class='sidemenuselected' style='position: relative; width: 91px'><a href='javascript:void(0)' class='showAttachments'>Attachments</a><br />&nbsp;<span class='span_AttachmentNumber'></span></div>
 			</td>

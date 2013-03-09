@@ -63,6 +63,9 @@ $_SESSION['ref_script']=$currentPage;
 	</tr>
 
 
+	<input type='hidden' name='organizationID' id='organizationID' value='' />
+
+<!--	
 	<tr>
 	<td class='searchRow'><label for='organizationID'><b>Publisher/Provider</b></label>
 	<br />
@@ -96,9 +99,10 @@ $_SESSION['ref_script']=$currentPage;
 	</td>
 	</tr>
 
+-->	
 
 	<tr>
-	<td class='searchRow'><label for='consortium'><b>Consortium</b></label>
+	<td class='searchRow'><label for='consortium'><b>Category</b></label>
 	<br />
 	<select name='consortiumID' id='consortiumID' style='width:150px' onchange='javsacript:updateSearch();'>
 	<option value=''>All</option>
@@ -119,6 +123,10 @@ $_SESSION['ref_script']=$currentPage;
 	</select>
 	</td>
 	</tr>
+
+	
+	<input type='hidden' name='statusID' id='statusID' value='' />	
+<!--
 
 	<tr>
 	<td class='searchRow'><label for='statusID'><b>Status</b></label>
@@ -144,6 +152,7 @@ $_SESSION['ref_script']=$currentPage;
 	</td>
 	</tr>
 
+-->
 
 	<tr>
 	<td class='searchRow'><label for='documentTypeID'><b>Document Type</b></label>
@@ -171,10 +180,9 @@ $_SESSION['ref_script']=$currentPage;
 	</tr>
 
 
+	<input type='hidden' name='expressionTypeID' id='expressionTypeID' value='' />	
 
-
-
-
+<!--
 
 	<tr>
 	<td class='searchRow'><label for='expressionTypeID'><b>Expression Type</b></label>
@@ -200,7 +208,7 @@ $_SESSION['ref_script']=$currentPage;
 
 	</td>
 	</tr>
-
+-->
 	<tr id='tr_Qualifiers'>
 	<td class='searchRow'><label for='qualifierID'><b>Qualifier</b></label>
 	<br />

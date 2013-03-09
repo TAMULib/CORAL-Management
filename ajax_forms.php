@@ -44,7 +44,7 @@ switch ($_GET['action']) {
 		<input type='hidden' id='editLicenseForm' name='editLicenseForm' value='Y'>
 		<table class="thickboxTable" style="width:300px;">
 		<tr>
-		<td colspan='2'><span class='headerText'>New Document</span><br /></td>
+		<td colspan='2'><span id='headerText' class='headerText'><?php if ($licenseID) echo "Edit "; else echo "New " ?>Document</span><br /></td>
 		</tr>
 
 		<tr>
@@ -67,6 +67,10 @@ switch ($_GET['action']) {
 		</tr>
 -->
 
+<?php 
+		//if not editing
+		if (!$licenseID){
+?>		
 		<tr>
 		<td colspan='2'><label for="documentType" class="formText">Type:</label><br />
 		<span id='span_error_documentTypeID' class='errorText'></span>
@@ -78,7 +82,7 @@ switch ($_GET['action']) {
 		$documentType = new DocumentType();
 
 		foreach($documentType->allAsArray() as $display) {
-			if ($document->documentTypeID == $display['documentTypeID']){
+			if ($license->typeID == $display['documentTypeID']){
 				echo "<option value='" . $display['documentTypeID'] . "' selected>" . $display['shortName'] . "</option>";
 			}else{
 				echo "<option value='" . $display['documentTypeID'] . "'>" . $display['shortName'] . "</option>";
@@ -93,7 +97,14 @@ switch ($_GET['action']) {
 		<br />
 		</td>
 		</tr>
-
+<?php 
+		//if editing
+		} else {
+?>
+			<input type='hidden' id='docTypeID' name='docTypeID' value='<?php echo $license->typeID; ?>'>
+<?php		
+		}
+?>		
 		
 		<tr>
 		<td colspan='2'><label for="consortiumID" class="formText">Category:</label><br />
@@ -146,7 +157,6 @@ switch ($_GET['action']) {
 		<?php
 		//if editing
 		if ($licenseID){
-		//	echo "Heya";
 		//	echo "<div id='div_uploadFile'>" . $document->documentURL . "<br /><a href='javascript:replaceFile();'>replace with new file</a>";
 		//	echo "<input type='hidden' id='upload_button' name='upload_button' value='" . $document->documentURL . "'></div>";
 		}else{
@@ -159,7 +169,6 @@ switch ($_GET['action']) {
 		<?php
 			echo "<div id='div_uploadFile'><input type='file' name='upload_button' id='upload_button'></div>";
 		}		
-		
 
 		?>
 		<span id='div_file_message'></span>

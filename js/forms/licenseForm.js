@@ -168,11 +168,13 @@ function doSubmitLicense(){
   if (validateForm() === true) {
 	// ajax call to add/update
 	
-	alert($("#docTypeID").val());
+	alert("DocumentType2:" + $("#docTypeID").val());
 	
 	if ($("#docTypeID").val()) {
 	$.post("ajax_processing.php?action=submitLicense", { licenseID: $("#editLicenseID").val(),description: $("#licenseDescription").val(),shortName: $("#licenseShortName").val(), organizationID: $("#licenseOrganizationID").val(), organizationName: $("#organizationName").val(), consortiumID: $("#licenseConsortiumID").val(), documentTypeID: $("#docTypeID").val(), uploadDocument: fileName } ,
 		function(data){$("#div_licenseForm").html(data);});
+	} else {
+		alert("No DocumentTypeID");
 	}
 	return false;
   
@@ -238,13 +240,15 @@ function validateForm (){
 	if (!validateRequired('licenseShortName','License Name is required.')) myReturn="1";
 //	if (!validateRequired('organizationName','Provider is required.')) myReturn="1";
 
-		if ($("#div_file_message").text().indexOf("successfully uploaded") > 0) {
+		if ($("#headerText").text().indexOf("Edit") == -1) {
+			if ($("#div_file_message").text().indexOf("successfully uploaded") > 0) {
 				$("#span_error_licenseuploadDocument").html('');
 			} else {
 				$("#span_error_licenseuploadDocument").html('File is required');
 				$("#licenseuploadDocument").focus();				
 				myReturn="1";
 			}
+		}
 	
 	if (myReturn == "1"){
 		return false;

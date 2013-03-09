@@ -60,7 +60,7 @@ if ($user->isAdmin()){
 
 <br />
 <br />
-
+<!--
 <table class="headerTable">
 <tr><td>
 <span class="headerText">Expression Types</span>&nbsp;&nbsp;<span id='span_ExpressionType_response'></span>
@@ -71,6 +71,9 @@ if ($user->isAdmin()){
 </div>
 </td></tr>
 </table>
+-->
+
+<!--
 
 <br />
 <br />
@@ -88,6 +91,9 @@ if ($user->isAdmin()){
 <br />
 <br />
 
+-->
+
+<!--
 <table class="headerTable">
 <tr><td>
 <span class="headerText">Signature Types</span>&nbsp;&nbsp;<span id='span_SignatureType_response'></span>
@@ -101,8 +107,9 @@ if ($user->isAdmin()){
 
 <br />
 <br />
+-->
 
-
+<!-- 
 <table class="headerTable">
 <tr><td>
 <span class="headerText">License Statuses</span>&nbsp;&nbsp;<span id='span_Status_response'></span>
@@ -116,7 +123,7 @@ if ($user->isAdmin()){
 
 <br />
 <br />
-
+-->
 
 
 <?php
@@ -132,8 +139,8 @@ if ($config->settings->organizationsModule != 'Y'){ ?>
 
 	<table class="headerTable">
 	<tr><td>
-	<span class="headerText">Consortia</span>&nbsp;&nbsp;<span id='span_Consortium_response'></span>
-	<br /><span id='span_newConsortium' class='adminAddInput'><a href='javascript:showAdd("Consortium");'>add new consortium</a></span>
+	<span class="headerText">Categories</span>&nbsp;&nbsp;<span id='span_Consortium_response'></span>
+	<br /><span id='span_newConsortium' class='adminAddInput'><a href='javascript:showAdd("Consortium");'>add new category</a></span>
 	<br /><br />
 	<div id='div_Consortium'>
 	<img src = "images/circle.gif">Loading...
@@ -143,7 +150,7 @@ if ($config->settings->organizationsModule != 'Y'){ ?>
 
 	<br />
 	<br />
-
+<!--
 	<table class="headerTable">
 	<tr><td>
 	<span class="headerText">Providers</span>&nbsp;&nbsp;<span id='span_Organization_response'></span>
@@ -154,7 +161,7 @@ if ($config->settings->organizationsModule != 'Y'){ ?>
 	</div>
 	</td></tr>
 	</table>
-
+-->
 <?php } ?>
 
 <br />
