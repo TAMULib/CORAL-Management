@@ -757,9 +757,21 @@ switch ($_GET['action']) {
 		}
 
 
-
+		$numDocuments = count($documentArray);
 		$numRows = count($documentArray);
-
+		
+		echo "Here " . $numRows . " " . $displayArchiveInd . " <br>";
+		
+		if ($displayArchiveInd) {
+			echo "I have archives<br>";
+		} else {
+			echo "I have no archives<br>";
+			if ($numRows > 0) {
+				echo "I am setting the flag<br>";
+				$displayOK = true;
+			}
+		}
+		
 		if (($numRows > 0) && ($displayArchiveInd != '2')){
 
 		?>
@@ -1034,8 +1046,21 @@ switch ($_GET['action']) {
 		}
 
 
+		echo "<br>Before Upload Num Rows: " . $numRows . "<br>";
+		echo "<br>Before Upload Num Rows: " . $isArchive . "<br>";
+		
+		if ($displayOK) {
+			echo "I can show it";
+		} else {
+			echo "I can not show it";
+		}
+		
 		if (($user->canEdit()) && ($displayArchiveInd != "")){
-			echo "<a href='ajax_forms.php?action=getUploadDocument&licenseID=" . $licenseID . "&height=310&width=310&modal=true' class='thickbox' id='uploadDocument'>upload new document</a>";
+			if (($isArchive = 'Y') && ($numRows > 0)){
+				echo "<a href='ajax_forms.php?action=getUploadDocument&licenseID=" . $licenseID . "&height=310&width=310&modal=true' class='thickbox' id='uploadDocument'>upload new document</a>";
+			} else {
+				echo "You must archive or remove the active document before you can upload another.";
+			}
 		}
 
 
