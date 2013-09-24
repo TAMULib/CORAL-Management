@@ -73,6 +73,7 @@ switch ($_GET['action']) {
 
 		$license = new License(new NamedArguments(array('primaryKey' => $_POST['licenseID'])));		
 		$license->typeID		= $_POST['documentTypeID'];
+		$license->statusDate = date( 'Y-m-d H:i:s' );
 		
 		try {
 			$document->save();
@@ -81,8 +82,6 @@ switch ($_GET['action']) {
 			echo $e->POSTMessage();
 		}
 
-//doug		
-		
         break;
 
 
@@ -470,7 +469,7 @@ switch ($_GET['action']) {
 			if ($_POST['licenseID'] <> ""){
 				//update data
 				$license = new License(new NamedArguments(array('primaryKey' => $_POST['licenseID'])));
-				$response = "License Updated Successfully.";
+				$response = "Document Updated Successfully.";
 //doug
 			}else{
 				//add data
@@ -478,9 +477,11 @@ switch ($_GET['action']) {
 				$license->licenseID  = '';
 				$license->createDate = date( 'Y-m-d H:i:s' );
 				$license->statusID='';
-				$license->statusDate ='';
-				$response = "License Added Successfully.<br />Please continue to upload documents and add expressions or emails.";
+				$license->statusDate = date( 'Y-m-d H:i:s' );
+//				$response = "License Added Successfully.<br />Please continue to upload documents and add expressions or emails.";
+				$response = "Document Added Successfully.";
 
+				
 			}
 
 
@@ -488,6 +489,7 @@ switch ($_GET['action']) {
 			$license->description			= $_POST['description'];
 			$license->consortiumID		= $_POST['consortiumID'];
 			$license->typeID		= $_POST['documentTypeID'];
+			$license->statusDate = date( 'Y-m-d H:i:s' );
 
 			//this method will save to either organization or provider depending on the settings
 			//also, if this organization or provider doesn't exist it will create a new org/provider
@@ -675,19 +677,20 @@ switch ($_GET['action']) {
 	 //new doc type being added directly on document form - returns updated drop down list
      case 'addDocumentType':
 
-		if ((isset($_POST['shortName'])) && ($_POST['shortName'] != '')){
+		if ((isset($_REQUEST['shortName'])) && ($_REQUEST['shortName'] != '')){
 			$documentType = new DocumentType();
 			$documentType->documentTypeID='';
-			$documentType->shortName		= $_POST['shortName'];
+			$documentType->shortName		= $_REQUEST['shortName'];
 
 			try {
 				$documentType->save();
 			} catch (Exception $e) {
 				echo $e->getMessage();
 			}
-		}
+		} 
 
-		echo "<select name='documentTypeID' id='documentTypeID'>";
+		
+		echo "<select name='docTypeID' id='docTypeID'>";
 
 		$displayArray = array();
 		$display = array();
@@ -698,7 +701,7 @@ switch ($_GET['action']) {
 			if ($_POST['shortName'] == $display['shortName']){
 				echo "<option value='" . $display['documentTypeID'] . "' selected>" . $display['shortName'] . "</option>";
 			}else{
-				echo "<option value='" . $display['documentTypeID'] . "'>" . $display['shortName'] . "</option>";
+				echo "<option value='" . $display['documentTypeID'] . "'>x" . $display['shortName'] . "</option>";
 			}
 		}
 

@@ -157,8 +157,8 @@ $(function(){
  });
 
 $("#submitLicense").click(function () {
-	alert("DocumentType: " + $("#docTypeID").val());	
-	alert("Category: " + $("#licenseConsortiumID").val());
+//	alert("DocumentType: " + $("#docTypeID").val());	
+//	alert("Category: " + $("#licenseConsortiumID").val());
   	doSubmitLicense();
 
 });
@@ -168,7 +168,7 @@ function doSubmitLicense(){
   if (validateForm() === true) {
 	// ajax call to add/update
 	
-	alert("DocumentType2:" + $("#docTypeID").val());
+//	alert("DocumentType2:" + $("#docTypeID").val());
 	
 	if ($("#docTypeID").val()) {
 	$.post("ajax_processing.php?action=submitLicense", { licenseID: $("#editLicenseID").val(),description: $("#licenseDescription").val(),shortName: $("#licenseShortName").val(), organizationID: $("#licenseOrganizationID").val(), organizationName: $("#organizationName").val(), consortiumID: $("#licenseConsortiumID").val(), documentTypeID: $("#docTypeID").val(), uploadDocument: fileName } ,
@@ -202,7 +202,7 @@ function addConsortium(){
 	 url:        "ajax_processing.php",
 	 cache:      false,
 	 data:       "action=addConsortium&shortName=" + $("#newConsortium").val(),
-	 success:    function(html) { $('#span_consortium').html(html); $('#span_newConsortium').html("<font color='red'>Consortium has been added</font>"); }
+	 success:    function(html) { $('#span_consortium').html(html); $('#span_newConsortium').html("<font color='red'>Category has been added</font>"); }
  });
 }
 
@@ -228,7 +228,7 @@ function addDocumentType(){
 	 url:        "ajax_processing.php",
 	 cache:      false,
 	 data:       "action=addDocumentType&shortName=" + $("#newDocumentType").val(),
-	 success:    function(html) { $('#span_DocumentType').html(html); $('#span_newDocumentType').html("<font color='red'>Document Type has been added</font>"); }
+	 success:    function(html) { $('#span_documentType').html(html); $('#span_newDocumentType').html("<font color='red'>Document Type has been added</font>"); }
  });
 }
 

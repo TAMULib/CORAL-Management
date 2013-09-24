@@ -69,9 +69,10 @@ switch ($_GET['action']) {
 			//	echo "<br />" . $license->getConsortiumName();
 			//}
 		}
-		echo $license->getConsortiumName();
-		echo "<br />" . $license->description();
-		echo "<br />Document Type ID:  " . $license->typeID();
+		echo "Category:  " . $license->getConsortiumName();
+		echo "<br />Description:  " . $license->description();
+		echo "<br />Creation Date:  " . format_date($license->createDate());
+		echo "<br />Last Update:  " . format_date($license->statusDate());
 		
 		?>
 		</div>
@@ -156,6 +157,7 @@ switch ($_GET['action']) {
 		<?php
 		if ($rowCount == "0"){
 			echo "(none found)";
+			
 		}
 
 		if ($user->canEdit()){
@@ -329,7 +331,7 @@ switch ($_GET['action']) {
 			$maxDisplay = 25;
 			
 			$thisPageNum = count($licenseArray) + $pageStart - 1;
-			echo "<span style='font-weight:bold;'>Displaying " . $pageStart . " to " . $thisPageNum . " of " . $totalRecords . " License Records</span><br />";
+			echo "<span style='font-weight:bold;'>Displaying " . $pageStart . " to " . $thisPageNum . " of " . $totalRecords . " Records</span><br />";
 
 			//print out page selectors
 			if ($totalRecords > $numberOfRecords){
@@ -760,18 +762,6 @@ switch ($_GET['action']) {
 		$numDocuments = count($documentArray);
 		$numRows = count($documentArray);
 		
-		echo "Here " . $numRows . " " . $displayArchiveInd . " <br>";
-		
-		if ($displayArchiveInd) {
-			echo "I have archives<br>";
-		} else {
-			echo "I have no archives<br>";
-			if ($numRows > 0) {
-				echo "I am setting the flag<br>";
-				$displayOK = true;
-			}
-		}
-		
 		if (($numRows > 0) && ($displayArchiveInd != '2')){
 
 		?>
@@ -831,7 +821,7 @@ switch ($_GET['action']) {
 
 				echo "<tr>";
 				echo "<td $classAdd>" . $document->shortName . "</td>";
-				echo "<td $classAdd>" . $documentType->shortName . " " . $documentType->documentTypeID ."</td>";
+				echo "<td $classAdd>" . $documentType->shortName . "</td>";
 				echo "<td $classAdd>" . $displayEffectiveDate . "</td>";
 //				echo "<td $classAdd>";
 //
@@ -1044,23 +1034,18 @@ switch ($_GET['action']) {
 				echo "<i>" . $numRows . " archive(s) available.  <a href='javascript:updateArchivedDocuments(1)'>show archives</a></i><br /><br />";
 			}
 		}
-
-
-		echo "<br>Before Upload Num Rows: " . $numRows . "<br>";
-		echo "<br>Before Upload Num Rows: " . $isArchive . "<br>";
-		
-		if ($displayOK) {
-			echo "I can show it";
-		} else {
-			echo "I can not show it";
-		}
 		
 		if (($user->canEdit()) && ($displayArchiveInd != "")){
-			if (($isArchive = 'Y') && ($numRows > 0)){
+			$duglicense = new License(new NamedArguments(array('primaryKey' => $licenseID)));
+			$dugArray = $duglicense->getDocuments();
+			$numDug = count($dugArray);				
+			
+			if ( $numDug == 0 ) {
 				echo "<a href='ajax_forms.php?action=getUploadDocument&licenseID=" . $licenseID . "&height=310&width=310&modal=true' class='thickbox' id='uploadDocument'>upload new document</a>";
 			} else {
-				echo "You must archive or remove the active document before you can upload another.";
+				echo "Only one active document is allowed.  Archive to upload a new document.";
 			}
+
 		}
 
 
