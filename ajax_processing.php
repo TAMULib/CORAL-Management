@@ -460,7 +460,9 @@ switch ($_GET['action']) {
 
 
     case 'submitLicense':
-
+echo '<pre>';
+print_r($_REQUEST);
+echo '</pre>';
 
     	//may have been sent through despite missing license name or provider- do check here to make sure that isn't the case before insert into DB
     	if (isset($_POST['shortName'])  && ($_POST['shortName'] != '')) {
@@ -511,7 +513,7 @@ switch ($_GET['action']) {
 
 					$document = new Document();
 					$document->documentID = '';
-					$document->expirationDate = '';
+//					$document->expirationDate = '';
 					$document->effectiveDate = date( 'Y-m-d H:i:s' );
 
 					$document->shortName=$_POST['shortName'];
@@ -519,6 +521,12 @@ switch ($_GET['action']) {
 					$document->parentDocumentID=$_POST['parentDocumentID'];
 					$document->licenseID=$licenseID;
 					$document->documentURL=$_POST['uploadDocument'];
+
+					if ((($document->expirationDate == "") || ($document->expirationDate == '0000-00-00')) && ($_POST['archiveInd'] == "1")){
+						$document->expirationDate = date( 'Y-m-d H:i:s' );
+					}else if ($_POST['archiveInd'] == "0"){
+						$document->expirationDate = '';
+					}
 
 
 					try {

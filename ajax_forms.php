@@ -175,9 +175,11 @@ switch ($_GET['action']) {
 		<span id='span_error_licenseuploadDocument' class='errorText'></span>
 		</td>
 		</tr>
+		<tr>
+			<td style='text-align:right;vertical-align:top;'><label for="archiveInd" class="formText">Archived:</label></td>
+			<td><input type='checkbox' id='archiveInd' name='archiveInd' value='1' /></td>
+		</tr>
 
-
-		
 		<tr style="vertical-align:middle;">
 		<td style="padding-top:8px;"><input type='button' value='submit' name='submitLicense' id ='submitLicense'></td>
 		<td style="padding-top:8px;padding-right:8px;text-align:right;"><input type='button' value='cancel' onclick="tb_remove()"></td>

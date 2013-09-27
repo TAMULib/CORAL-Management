@@ -171,7 +171,12 @@ function doSubmitLicense(){
 //	alert("DocumentType2:" + $("#docTypeID").val());
 	
 	if ($("#docTypeID").val()) {
-	$.post("ajax_processing.php?action=submitLicense", { licenseID: $("#editLicenseID").val(),description: $("#licenseDescription").val(),shortName: $("#licenseShortName").val(), organizationID: $("#licenseOrganizationID").val(), organizationName: $("#organizationName").val(), consortiumID: $("#licenseConsortiumID").val(), documentTypeID: $("#docTypeID").val(), uploadDocument: fileName } ,
+		if ($("#archiveInd").is(":checked")) {
+			archiveval = 1;
+		} else {
+			archiveval = 0;
+		}
+	$.post("ajax_processing.php?action=submitLicense", { licenseID: $("#editLicenseID").val(),description: $("#licenseDescription").val(),shortName: $("#licenseShortName").val(), organizationID: $("#licenseOrganizationID").val(), organizationName: $("#organizationName").val(), consortiumID: $("#licenseConsortiumID").val(), documentTypeID: $("#docTypeID").val(), uploadDocument: fileName, archiveInd: archiveval } ,
 		function(data){$("#div_licenseForm").html(data);});
 	} else {
 		alert("No DocumentTypeID");
