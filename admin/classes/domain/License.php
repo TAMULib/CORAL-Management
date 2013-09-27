@@ -23,7 +23,40 @@ class License extends DatabaseObject {
 
 	protected function overridePrimaryKeyName() {}
 
+	public function load() {
+		//if exists in the database
+		if ($this->primaryKey) {
+			$query = "SELECT * FROM `$this->tableName` WHERE `$this->primaryKeyName` = '$this->primaryKey'";
+			$result = $this->db->processQuery($query, 'assoc');
+			$result['consortiumIDs'] = $this->getConsortiumsByLicense($this->primaryKey);
+			foreach (array_keys($result) as $attributeName) {
+				$this->addAttribute($attributeName);
+				$this->attributes[$attributeName] = $result[$attributeName];
+			}
+		}else{
+			// Figure out attributes from existing database
+			$query = "SELECT COLUMN_NAME FROM information_schema.`COLUMNS` WHERE table_schema = '";
+			$query .= $this->db->config->database->name . "' AND table_name = '$this->tableName'";// MySQL-specific
+			foreach ($this->db->processQuery($query) as $result) {
+				$attributeName = $result[0];
+				$this->addAttribute($attributeName);
+			}
 
+		}
+	}
+
+	//returns all Consortiums associated with a license
+	public function getConsortiumsByLicense($licenseid) {
+		$sql = "SELECT `consortiumID` FROM `license_consortium` c WHERE c.`licenseID`={$licenseid}";
+		if ($result = mysql_query($sql)) {
+			$rows = array();
+			while ($row = mysql_fetch_array($result)) {
+				$rows[] = $row['consortiumID'];
+			}
+			return $rows;
+		}
+		return false;
+	}
 
 	//returns array of Document objects - used by forms to get dropdowns of available documents
 	public function getDocuments(){
@@ -585,7 +618,20 @@ class License extends DatabaseObject {
 		}
 	}
 
-
+	public function setConsortiums($consortiumids=NULL) {
+		if ($consortiumids) {
+			$sql = "INSERT INTO `license_consortium` (`licenseID`,`consortiumID`) VALUES ";
+			foreach ($consortiumids as $cid) {
+				$sql .= "({$this->primaryKey},".mysql_real_escape_string($cid)."),";
+			}
+			$sql = rtrim($sql,',');
+echo $sql;
+			if ($this->db->processQuery($sql)) {
+				$this->addAttribute("consortiumIDs");
+				$this->attributes["consortiumIDs"] = $consortiumids;
+			}
+		}
+	}
 
 
 
@@ -604,8 +650,10 @@ class License extends DatabaseObject {
 				" . $dbName . ".OrganizationRole
 				WHERE OrganizationRole.organizationRoleID = ORP.organizationRoleID
 				AND ORP.organizationID = O.organizationID
-				AND UPPER(OrganizationRole.shortName) LIKE 'CONSORT%'
+				AND ORP.organizationRoleID=1
 				ORDER BY 1;";
+// Jason S: switched to querying by index, rather than string matching
+//	AND UPPER(OrganizationRole.shortName) LIKE 'CONSORT%'
 
 		//otherwise get the consortium from this database
 		}else{
@@ -698,6 +746,29 @@ class License extends DatabaseObject {
 		}
 	}
 
+	//go to organizations and get all the consortia name for this license
+	public function getConsortiumNames(){
+		$config = new Configuration;
+
+		//if the org module is installed get the org name from org database
+		if ($config->settings->organizationsModule == 'Y'){
+			$dbName = $config->settings->organizationsDatabaseName;
+
+			$orgArray = array();
+			$query = "SELECT `name` FROM " . $dbName . ".Organization WHERE organizationID IN (".implode(',',$this->consortiumIDs).")";
+			$result = mysql_query($query);
+
+			while ($row = mysql_fetch_assoc($result)){
+				$temp[] = $row['name'];
+			}
+			return $temp;
+		//otherwise if the org module is not installed get the consortium name from this database
+		}else{
+			$consortium = new Consortium(new NamedArguments(array('primaryKey' => $this->consortiumID)));
+			return $consortium->shortName;
+		}
+	}
+
 
 
 	//used for A-Z on search (index)
@@ -714,8 +785,24 @@ class License extends DatabaseObject {
 
 		return $alphArray;
 	}
-
-
+/*
+	public function save() {
+		//store consortiumids in a temp var for inserting into the DB after the main license has been created to avoid having the parent save() try to deal with multiple consortiumIDs
+		if ($this->attributes['consortiumIDs']) {
+			$consortiumids = $this->attributes['consortiumIDs'];
+			unset($this->attributes['consortiumIDs']);
+		}
+		parent::save();
+		if ($this->primaryKey && $consortiumids) {
+			$sql = "INSERT INTO `license_consortium` (`licenseID`,`consortiumID`) VALUES ";
+			foreach ($consortiumids as $cid) {
+				$sql .= "({$this->primaryKey},{$cid}),";
+			}
+			$sql = rtrim($sql,',');
+			$this->db->processQuery($sql);
+		}
+	}
+*/
 }
 
 ?>

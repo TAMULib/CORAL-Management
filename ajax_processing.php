@@ -23,7 +23,6 @@
 **************************************************************************************************************************
 */
 
-
 include_once 'directory.php';
 include_once 'user.php';
 
@@ -487,13 +486,14 @@ switch ($_GET['action']) {
 
 			$license->shortName			= $_POST['shortName'];
 			$license->description			= $_POST['description'];
-			$license->consortiumID		= $_POST['consortiumID'];
+//			$license->consortiumID		= $_POST['consortiumID'];
 			$license->typeID		= $_POST['documentTypeID'];
 			$license->statusDate = date( 'Y-m-d H:i:s' );
 
 			//this method will save to either organization or provider depending on the settings
 			//also, if this organization or provider doesn't exist it will create a new org/provider
 			$license->setOrganization($_POST['organizationID'], $_POST['organizationName']);
+
 
 			//this is the html that will be displayed in the form after submitting.
 			//this is the only form in which this is done.
@@ -506,6 +506,8 @@ switch ($_GET['action']) {
 				
 					// I am adding a new license so go ahead and create the document
 					$licenseID = $license->primaryKey;
+
+					$license->setConsortiums($_POST['consortiumID']);
 					
 					// Save the document
 

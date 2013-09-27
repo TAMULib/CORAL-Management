@@ -23,7 +23,8 @@
 ** each form should have a corresponding javascript file located in /js/forms/
 **************************************************************************************************************************
 */
-
+error_reporting(E_ALL ^ E_NOTICE);
+ini_set('display_errors','stdout');
 include_once 'directory.php';
 include_once 'user.php';
 
@@ -107,7 +108,7 @@ switch ($_GET['action']) {
 ?>		
 		
 		<tr>
-		<td colspan='2'><label for="consortiumID" class="formText">Category:</label><br />
+		<td colspan='2'><label for="consortiumID" class="formText">Categories:</label><br />
 		<span id='span_consortium'>
 		<?php
 		try{
@@ -115,7 +116,7 @@ switch ($_GET['action']) {
 			$consortiaArray=$license->getConsortiumList()
 
 			?>
-			<select name='licenseConsortiumID' id='licenseConsortiumID'>
+			<select name='licenseConsortiumID' id='licenseConsortiumID' multiple='multiple'>
 			<?php
 
 

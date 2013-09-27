@@ -25,7 +25,6 @@
 **************************************************************************************************************************
 */
 
-
 include_once 'directory.php';
 include_once 'user.php';
 
@@ -36,8 +35,7 @@ switch ($_GET['action']) {
 	case 'getLicenseHead':
 		$licenseID = $_GET['licenseID'];
 		$license = new License(new NamedArguments(array('primaryKey' => $licenseID)));
-		$consortium = new Consortium(new NamedArguments(array('primaryKey' => $license->consortiumID)));
-
+//		$consortium = new Consortium(new NamedArguments(array('primaryKey' => $license->consortiumID)));
 		?>
 
 		<table class="headerTable">
@@ -58,18 +56,25 @@ switch ($_GET['action']) {
 		if ($config->settings->organizationsModule == 'Y'){
 			$util = new Utility();
 
-			echo $license->getOrganizationName() . "  <a href='" . $util->getOrganizationURL() . $license->organizationID . "' target='_blank'>edit organization</a>";
-
-			if ($license->consortiumID) {
+			echo "<div>{$license->getOrganizationName()} <a href=\"{$util->getOrganizationURL()}{$license->organizationID}\" target=\"_blank\">Edit Organization</a></div>";
+			echo 'Categories:<br />';
+			if ($license->consortiumIDs) {
+				echo '<ul>';
+				foreach ($license->getconsortiumNames as $consortiumname) {
+					echo "<li>{$consortiumname}</li>";
+				}
+				echo '</ul>';
+			} elseif ($license->consortiumID) {
 				echo "<br />" . $license->getConsortiumName();
 			}
+
 		}else{
 			//echo $license->getOrganizationName();
 			//if ($license->consortiumID) {
 			//	echo "<br />" . $license->getConsortiumName();
 			//}
 		}
-		echo "Category:  " . $license->getConsortiumName();
+//		echo "Category:  " . $license->getConsortiumName();
 		echo "<br />Description:  " . $license->description();
 		echo "<br />Creation Date:  " . format_date($license->createDate());
 		echo "<br />Last Update:  " . format_date($license->statusDate());
