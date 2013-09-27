@@ -23,8 +23,6 @@
 ** each form should have a corresponding javascript file located in /js/forms/
 **************************************************************************************************************************
 */
-error_reporting(E_ALL ^ E_NOTICE);
-ini_set('display_errors','stdout');
 include_once 'directory.php';
 include_once 'user.php';
 
@@ -122,9 +120,10 @@ switch ($_GET['action']) {
 
 			$display = array();
 
+			$licenseconsortiumids = $license->getConsortiumsByLicense();
 
 			foreach($consortiaArray as $display) {
-				if ($license->consortiumID == $display['consortiumID']){
+				if (is_array($licenseconsortiumids) && in_array($display['consortiumID'],$licenseconsortiumids)) {
 					echo "<option value='" . $display['consortiumID'] . "' selected>" . $display['name'] . "</option>";
 				}else{
 					echo "<option value='" . $display['consortiumID'] . "'>" . $display['name'] . "</option>";

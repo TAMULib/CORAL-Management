@@ -483,13 +483,11 @@ switch ($_GET['action']) {
 				
 			}
 
-
 			$license->shortName			= $_POST['shortName'];
 			$license->description			= $_POST['description'];
 //			$license->consortiumID		= $_POST['consortiumID'];
 			$license->typeID		= $_POST['documentTypeID'];
 			$license->statusDate = date( 'Y-m-d H:i:s' );
-
 			//this method will save to either organization or provider depending on the settings
 			//also, if this organization or provider doesn't exist it will create a new org/provider
 			$license->setOrganization($_POST['organizationID'], $_POST['organizationName']);
@@ -500,6 +498,8 @@ switch ($_GET['action']) {
 			try {
 				$license->save();
 
+				$license->setConsortiums($_POST['consortiumID']);
+
 				if ((isset($_POST['licenseID'])) && $_POST['licenseID'] != ''){
 					$licenseID = $_POST['licenseID'];
 				}else{
@@ -507,8 +507,6 @@ switch ($_GET['action']) {
 					// I am adding a new license so go ahead and create the document
 					$licenseID = $license->primaryKey;
 
-					$license->setConsortiums($_POST['consortiumID']);
-					
 					// Save the document
 
 					$document = new Document();
@@ -529,13 +527,6 @@ switch ($_GET['action']) {
 						//echo $e->POSTMessage();
 						echo $e;						
 					}
-
-
-//
-
-					
-					
-					
 				}
 				?>
 				<table class="thickboxTable" style="background-image:url('images/title.gif');background-repeat:no-repeat;width:260px;">

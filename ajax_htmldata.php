@@ -58,17 +58,17 @@ switch ($_GET['action']) {
 
 			echo "<div>{$license->getOrganizationName()} <a href=\"{$util->getOrganizationURL()}{$license->organizationID}\" target=\"_blank\">Edit Organization</a></div>";
 			echo 'Categories:<br />';
-			if ($license->consortiumIDs) {
+
+			if ($licenseconsortiumids = $license->getConsortiumsByLicense()) {
 				echo '<ul>';
-				foreach ($license->getconsortiumNames as $consortiumname) {
-					echo "<li>{$consortiumname}</li>";
+				foreach ($licenseconsortiumids as $cid) {
+					echo "<li>{$license->getConsortiumName($cid)}</li>";
 				}
 				echo '</ul>';
 			} elseif ($license->consortiumID) {
 				echo "<br />" . $license->getConsortiumName();
 			}
-
-		}else{
+//		}else{
 			//echo $license->getOrganizationName();
 			//if ($license->consortiumID) {
 			//	echo "<br />" . $license->getConsortiumName();
@@ -297,7 +297,10 @@ switch ($_GET['action']) {
 		if ($consortiumID == "0") {
 			$whereAdd[] = " L.consortiumID IS NULL ";
 		}else{
-			if ($consortiumID <> "") $whereAdd[] = " L.consortiumID = '" . $consortiumID . "'";
+//			if ($consortiumID <> "") $whereAdd[] = " L.consortiumID = '" . $consortiumID . "'";
+			if ($consortiumID <> "") {
+				$whereAdd[] = " lc.`consortiumID`={$consortiumID}";
+			}
 		}
 
 		if ($_GET['statusID']) $whereAdd[] = "S.statusID = '" . $_GET['statusID'] . "'";
@@ -383,8 +386,10 @@ switch ($_GET['action']) {
 			} else {
 				echo "<br />";
 			}
-
-
+			//if consortium is a search criteria, borrow the consortium name from the search results since it's already in there
+			if ($consortiumID) {
+				echo "<div><b>Category</b>: {$licenseArray[0]['consortiumName']}</div><br />";
+			}
 			?>
 			<table class='dataTable' style='width:727px'>
 			<tr>
@@ -397,6 +402,7 @@ switch ($_GET['action']) {
 			<?php
 
 			$i=0;
+
 			foreach ($licenseArray as $license){
 				$i++;
 				if ($i % 2 == 0){
@@ -406,7 +412,6 @@ switch ($_GET['action']) {
 				}
 				echo "<tr>";
 				echo "<td $classAdd><a href='license.php?licenseID=" . $license['licenseID'] . "'>" . $license['licenseName'] . "</a></td>";
-				//echo "<td $classAdd>" . $license['providerName'] . "</td>";
 				echo "<td $classAdd>" . $license['Type'] . "</td>";
 				echo "<td $classAdd>" . $license['effectiveDate'] . "</td>";
 				echo "</tr>";

@@ -28,7 +28,7 @@ class License extends DatabaseObject {
 		if ($this->primaryKey) {
 			$query = "SELECT * FROM `$this->tableName` WHERE `$this->primaryKeyName` = '$this->primaryKey'";
 			$result = $this->db->processQuery($query, 'assoc');
-			$result['consortiumIDs'] = $this->getConsortiumsByLicense($this->primaryKey);
+//			$result['consortiumIDs'] = $this->getConsortiumsByLicense($this->primaryKey);
 			foreach (array_keys($result) as $attributeName) {
 				$this->addAttribute($attributeName);
 				$this->attributes[$attributeName] = $result[$attributeName];
@@ -46,8 +46,8 @@ class License extends DatabaseObject {
 	}
 
 	//returns all Consortiums associated with a license
-	public function getConsortiumsByLicense($licenseid) {
-		$sql = "SELECT `consortiumID` FROM `license_consortium` c WHERE c.`licenseID`={$licenseid}";
+	public function getConsortiumsByLicense() {
+		$sql = "SELECT `consortiumID` FROM `license_consortium` c WHERE c.`licenseID`={$this->primaryKey}";
 		if ($result = mysql_query($sql)) {
 			$rows = array();
 			while ($row = mysql_fetch_array($result)) {
@@ -285,7 +285,8 @@ class License extends DatabaseObject {
 			//now formulate query
 			$query = $select . "
 									FROM " . $dbName . ".Organization O, License L
-									LEFT JOIN " . $dbName . ".Organization O2 ON (O2.organizationID = L.consortiumID)
+									LEFT JOIN `license_consortium` lc ON (lc.`licenseID` = L.`licenseID`)
+									LEFT JOIN " . $dbName . ".`Organization` O2 ON (O2.`organizationID` = lc.`consortiumID`)
 									LEFT JOIN " . $dbName . ".Alias A ON (A.organizationID = L.organizationID)
 									LEFT JOIN Status S ON (S.statusID = L.statusID)
 									LEFT JOIN Document D ON (D.licenseID = L.licenseID)
@@ -308,6 +309,7 @@ class License extends DatabaseObject {
 									LEFT JOIN Document D ON (D.licenseID = L.licenseID)
 									LEFT JOIN DocumentType DT ON (DT.documentTypeID = L.TypeID)									
 									LEFT JOIN Expression E ON (D.documentID = E.documentID)
+									LEFT JOIN `license_consortium` lc ON (lc.`licenseID` = L.`licenseID`)
 									WHERE O.organizationID = L.organizationID and D.expirationDate is null
 									" . $whereStatement;
 
@@ -321,7 +323,7 @@ class License extends DatabaseObject {
   	  $query .= "\nLIMIT " . $limit;
 		}
 		
-//		echo $query;
+//		echo $query.'<br />';
 		
 		return $query;
   }
@@ -620,16 +622,21 @@ class License extends DatabaseObject {
 
 	public function setConsortiums($consortiumids=NULL) {
 		if ($consortiumids) {
+			//clear out any previous consortiums tied to this license
+			$this->deleteLicenseConsortiums();
+			//tie the new consortiums to this license
 			$sql = "INSERT INTO `license_consortium` (`licenseID`,`consortiumID`) VALUES ";
 			foreach ($consortiumids as $cid) {
-				$sql .= "({$this->primaryKey},".mysql_real_escape_string($cid)."),";
+				$sql .= "({$this->primaryKey},".$this->db->escapeString($cid)."),";
 			}
 			$sql = rtrim($sql,',');
-echo $sql;
+			$this->db->processQuery($sql);
+/*
 			if ($this->db->processQuery($sql)) {
 				$this->addAttribute("consortiumIDs");
 				$this->attributes["consortiumIDs"] = $consortiumids;
 			}
+*/
 		}
 	}
 
@@ -725,7 +732,7 @@ echo $sql;
 	
 	
 	//go to organizations and get the consortia name for this license
-	public function getConsortiumName(){
+	public function getConsortiumName($consortiumid=NULL){
 		$config = new Configuration;
 
 		//if the org module is installed get the org name from org database
@@ -733,7 +740,7 @@ echo $sql;
 			$dbName = $config->settings->organizationsDatabaseName;
 
 			$orgArray = array();
-			$query = "SELECT name FROM " . $dbName . ".Organization WHERE organizationID = " . $this->consortiumID;
+			$query = "SELECT `name` FROM `{$dbName}`.`Organization` WHERE `organizationID`=".(($consortiumid) ? $consortiumid:$this->consortiumID);
 			$result = mysql_query($query);
 
 			while ($row = mysql_fetch_assoc($result)){
@@ -745,31 +752,6 @@ echo $sql;
 			return $consortium->shortName;
 		}
 	}
-
-	//go to organizations and get all the consortia name for this license
-	public function getConsortiumNames(){
-		$config = new Configuration;
-
-		//if the org module is installed get the org name from org database
-		if ($config->settings->organizationsModule == 'Y'){
-			$dbName = $config->settings->organizationsDatabaseName;
-
-			$orgArray = array();
-			$query = "SELECT `name` FROM " . $dbName . ".Organization WHERE organizationID IN (".implode(',',$this->consortiumIDs).")";
-			$result = mysql_query($query);
-
-			while ($row = mysql_fetch_assoc($result)){
-				$temp[] = $row['name'];
-			}
-			return $temp;
-		//otherwise if the org module is not installed get the consortium name from this database
-		}else{
-			$consortium = new Consortium(new NamedArguments(array('primaryKey' => $this->consortiumID)));
-			return $consortium->shortName;
-		}
-	}
-
-
 
 	//used for A-Z on search (index)
 	public function getAlphabeticalList(){
@@ -785,24 +767,16 @@ echo $sql;
 
 		return $alphArray;
 	}
-/*
-	public function save() {
-		//store consortiumids in a temp var for inserting into the DB after the main license has been created to avoid having the parent save() try to deal with multiple consortiumIDs
-		if ($this->attributes['consortiumIDs']) {
-			$consortiumids = $this->attributes['consortiumIDs'];
-			unset($this->attributes['consortiumIDs']);
-		}
-		parent::save();
-		if ($this->primaryKey && $consortiumids) {
-			$sql = "INSERT INTO `license_consortium` (`licenseID`,`consortiumID`) VALUES ";
-			foreach ($consortiumids as $cid) {
-				$sql .= "({$this->primaryKey},{$cid}),";
-			}
-			$sql = rtrim($sql,',');
-			$this->db->processQuery($sql);
-		}
+
+	function deleteLicenseConsortiums() {
+		$sql = "DELETE FROM `license_consortium` WHERE `licenseID`={$this->primaryKey}";
+		$this->db->processQuery($sql);
 	}
-*/
+
+	public function delete() {
+		$this->deleteLicenseConsortiums();
+		parent::delete();
+	}
 }
 
 ?>
