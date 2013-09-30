@@ -929,6 +929,60 @@ switch ($_GET['action']) {
 
         break;
 
+	//form to add/edit notes
+    case 'getNoteForm':
+
+		//note ID sent in for updates
+		if (isset($_GET['noteID'])) $noteID = $_GET['noteID']; else $noteID = '';
+
+		$note = new Note(new NamedArguments(array('primaryKey' => $noteID,'tableName'=>'document_notes','primaryKeyName'=>'noteID')));
+		$types = $note->getTypes();
+		?>
+		<div id='div_noteForm'>
+		<form id='noteForm'>
+		<input type='hidden' id='noteID' name='noteID' value='<?php echo $noteID; ?>'>
+		<input type='hidden' id='licenseID' name='licenseID' value='<?php echo $_GET['licenseID']; ?>'>
+		<table class="thickboxTable" style="width:300px;">
+			<tr>
+				<td colspan='2'><span class='headerText'>Notes</span><br /><span id='span_errors'></span><br /></td>
+			</tr>
+			<tr>
+				<td colspan='2'><label for="notetitle" class="formTitle">Title:</label><br /><input type='text' name='notetitle' id = 'notetitle' value='<?php echo $note->title;?>' /></td>
+			</tr>
+			<tr>
+				<td colspan='2'><label for="notebody" class="formText">Body:</label><br /><textarea name='notebody' id = 'notebody' cols='44' rows='10'><?php echo $note->body; ?></textarea></td>
+			</tr>
+			<tr>
+				<td colspan='2'>
+<?php
+		if ($types) {
+			echo '<select id="notetypeid" name="notetypeid">
+					<option value="0">Select a type</option>';
+			foreach ($types as $type) {
+				echo "<option value=\"{$type['typeID']}\"".(($note->typeID == $type['typeID']) ? ' selected="selected"':'').">{$type['name']}</option>";
+			}
+			echo '</select>';
+		}
+?>
+				</td>
+			</tr>
+			<tr style="vertical-align:middle;">
+				<td style="padding-top:8px;"><input type='button' value='submit' name='submitNote' id='submitNote' /></td>
+				<td style="padding-top:8px;padding-right:8px;text-align:right;"><input type='button' value='cancel' onclick="tb_remove();window.parent.updateNotes();"></td>
+			</tr>
+		</table>
+
+
+
+		<script type="text/javascript" src="js/forms/noteForm.js?random=<?php echo rand(); ?>"></script>
+		</form>
+		</div>
+
+
+		<?php
+
+        break;
+
 
 	//generic form for administering lookup tables on the admin page (these tables simply have an ID and shortName attributes)
 	case 'getAdminUpdateForm':

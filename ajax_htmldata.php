@@ -172,6 +172,73 @@ switch ($_GET['action']) {
 		break;
 
 
+	case 'getAllNotes':
+		$licenseID = $_GET['licenseID'];
+		$license = new License(new NamedArguments(array('primaryKey' => $licenseID)));
+		$notes = $license->getNotes();
+		if (count($notes) > 0){
+			$types = $notes[0]->getTypes();
+		?>
+
+		<table class='verticalFormTable'>
+		<tr>
+		<th style='width:80px;'>Date</th>
+		<th style='width:80px;'>Title</th>
+		<th style='width:540px;'>Details</th>
+		<th style='width:150px;'>Type</th>
+		<?php if ($user->canEdit()){ ?>
+			<th style='width:100px;'>&nbsp;</th>
+		<?php } ?>
+		</tr>
+
+			<?php
+
+
+			foreach($notes as $note) {
+				if (($note->createDate == "0000-00-00") || ($note->createDate == "")) {
+					$createDate='';
+				}else{
+					$createDate=format_date($note->createDate);
+				}
+				$noteText = nl2br($note->body);
+
+				echo "<tr>";
+				echo "<td>" . $createDate . "</td>";
+				echo "<td>{$note->title}</td>";
+				echo "<td><div id='note_short_" . $note->noteID . "'>" . substr($noteText, 0,200);
+
+				if (strlen($noteText) > 200){
+					echo "...&nbsp;&nbsp;<a href='javascript:showFullNoteText(\"" . $note->noteID . "\");'>more...</a>";
+				}
+
+				echo "</div>";
+				echo "<div id='note_full_" . $note->noteID . "' style='display:none'>" . $noteText;
+					echo "&nbsp;&nbsp;<a href='javascript:hideFullNoteText(\"" . $note->noteID . "\");'>less...</a>";
+				echo "</div>";
+				echo "</td>
+					  <td>{$types[$note->typeID]}</td>";
+
+
+				if ($user->canEdit()){
+					echo "<td><a href='ajax_forms.php?action=getNoteForm&height=398&width=305&modal=true&licenseID=" . $licenseID . "&noteID=" . $note->noteID . "' class='thickbox' id='editNote'>edit</a>&nbsp;&nbsp;<a href='javascript:deleteNote(\"". $note->noteID . "\");'>remove</a></td>";
+				}
+
+				echo "</tr>";
+
+			}
+			?>
+
+		</table>
+		<?php
+		}else{
+			echo "(none found)";
+		}
+
+		if ($user->canEdit()){
+			echo "<br /><br /><a href='ajax_forms.php?action=getNoteForm&licenseID=" . $licenseID . "&height=380&width=305&modal=true' class='thickbox' id='note'>add new note</a>";
+		}
+
+	break;
 
 	//attachments display for attachments tab on license.php
 	//note - this was originally called email logs since that's the main intent but we renamed to attachments so it could be general purpose
@@ -271,6 +338,14 @@ switch ($_GET['action']) {
 
 		break;
 
+	case 'getNotesNumber':
+		$licenseID = $_GET['licenseID'];
+		$license = new License(new NamedArguments(array('primaryKey' => $licenseID)));
+
+		echo $license->getNotesCount();
+
+		break;
+	break;
 	//license search - used on index.php
 	case 'getSearchLicenses':
 

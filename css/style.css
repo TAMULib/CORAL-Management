@@ -48,7 +48,7 @@ a.smallLink {font-size:95%; }
 
 span.smallText{font-size:90%;}
 span.redText{color:red;}
-span.span_AttachmentNumber{font-size:small;font-weight:normal; color:gray}
+span.span_AttachmentNumber,span.span_NoteNumber{font-size:small;font-weight:normal; color:gray}
 
 .space {
 line-height: 1 em;

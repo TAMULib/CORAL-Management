@@ -210,7 +210,35 @@ class License extends DatabaseObject {
 		return $objects;
 	}
 
+	public function getNotes(){
 
+		$query = "SELECT `noteID` FROM `document_notes` WHERE `licenseID`={$this->primaryKey} ORDER BY `createDate` DESC";
+
+		$result = $this->db->processQuery($query, 'assoc');
+
+		$objects = array();
+		if (is_array($result)) {
+			foreach ($result as $row) {
+				$object = new Note(new NamedArguments(array('primaryKey' => $row['noteID'],'tableName'=>'document_notes','primaryKeyName'=>'noteID')));
+				array_push($objects, $object);
+			}
+		}else{
+			$object = new Note(new NamedArguments(array('primaryKey' => $result['noteID'],'tableName'=>'document_notes','primaryKeyName'=>'noteID')));
+			array_push($objects, $object);
+		}
+
+		return $objects;
+	}
+
+	public function getNotesCount() {
+		if ($this->primaryKey) {
+			$sql = "SELECT COUNT(*) AS `total` FROM `document_notes` WHERE `licenseID`={$this->primaryKey}";
+			if ($result = $this->db->processQuery($sql,'assoc')) {
+				return $result['total'];
+			}
+		}
+		return false;
+	}
 
 
 	//removes this license

@@ -1100,6 +1100,46 @@ switch ($_GET['action']) {
 
  		break;
 
+     case 'deleteNote':
+
+ 		$note = new Note(new NamedArguments(array('primaryKey' => $_GET['noteID'],'tableName'=>'document_notes','primaryKeyName'=>'noteID')));
+
+		try {
+			$note->delete();
+			echo "Note successfully deleted";
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
+
+ 		break;
+
+
+	//add/update for note
+    case 'submitNote':
+    	//if noteID is sent then this is an update
+
+    	if ((isset($_POST['noteID'])) && ($_POST['noteID'] <> "")){
+ 			$note = new Note(new NamedArguments(array('primaryKey' => $_POST['noteID'],'tableName'=>'document_notes','primaryKeyName'=>'noteID')));
+    	} else {
+ 			$note = new Note(new NamedArguments(array('tableName'=>'document_notes','primaryKeyName'=>'noteID')));
+ 			$note->noteID = '';
+			$note->createDate 	=  date( 'Y-m-d H:i:s' );
+		}
+
+		$note->title = $_POST['title'];
+		$note->body	= $_POST['body'];
+		$note->licenseID 	= $_POST['licenseID'];
+		$note->typeID 	= $_POST['typeID'];
+
+
+		try {
+			$note->save();
+			echo $note->primaryKey;
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
+
+	break;
 
 	 //updates license status when a new one is selected in dropdown box
      case 'updateStatus':
