@@ -96,6 +96,11 @@ switch ($_GET['action']) {
 		<br />
 		</td>
 		</tr>
+		<tr>
+			<td><label for="revisionDate" class="formText">Revision Date:</label></td>
+			<td><input class="date-pick" type='input' id='revisionDate' name='revisionDate' /></td>
+		</tr>
+
 <?php 
 		//if editing
 		} else {
@@ -176,7 +181,7 @@ switch ($_GET['action']) {
 		</td>
 		</tr>
 		<tr>
-			<td style='text-align:right;vertical-align:top;'><label for="archiveInd" class="formText">Archived:</label></td>
+			<td><label for="archiveInd" class="formText">Archived:</label></td>
 			<td><input type='checkbox' id='archiveInd' name='archiveInd' value='1' /></td>
 		</tr>
 
@@ -190,7 +195,6 @@ switch ($_GET['action']) {
 		<script type="text/javascript" src="js/forms/licenseForm.js?random=<?php echo rand(); ?>"></script>
 		</form>
 		</div>
-
 
 		<?php
 
@@ -216,6 +220,11 @@ switch ($_GET['action']) {
 			$effectiveDate=format_date($document->effectiveDate);
 		}
 
+		if (($document->revisionDate == "0000-00-00") || ($document->revisionDate == "")){
+			$revisionDate = '';
+		} else {
+			$revisionDate = format_date($document->revisionDate);
+		}
 
 		if (($document->expirationDate) && ($document->expirationDate != '0000-00-00')){
 			$archiveChecked = 'checked';
@@ -234,10 +243,16 @@ switch ($_GET['action']) {
 		<td colspan='2'><span class='headerText'>Document Upload</span><br /><span id='span_errors'></span><br /></td>
 		</tr>
 		<tr>
-		<td style='text-align:right;vertical-align:top;'><label for="effectiveDate" class="formText">Revision Date:</label><br /><span id='span_error_effectiveDate' class='errorText'></span></td>
+		<td style='text-align:right;vertical-align:top;'><label for="effectiveDate" class="formText">Effective Date:</label><br /><span id='span_error_effectiveDate' class='errorText'></span></td>
 		<td>
 		<input class='date-pick' id='effectiveDate' name='effectiveDate' style='width:80px' value='<?php echo $effectiveDate; ?>' />
 		</td>
+		</tr>
+		<tr>
+			<td style='text-align:right;vertical-align:top;'><label for="revisionDate" class="formText">Revision Date:</label><br /><span id='span_error_revisionDate' class='errorText'></span></td>
+			<td>
+				<input class='date-pick' id='revisionDate' name='revisionDate' style='width:80px' value='<?php echo $revisionDate; ?>' />
+			</td>
 		</tr>
 
 		<tr>

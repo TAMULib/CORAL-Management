@@ -32,7 +32,6 @@ switch ($_GET['action']) {
 	//this just saves the URL in db
 
     case 'submitDocument':
-
     	//if documentID is sent then this is an update
     	if ((isset($_POST['documentID'])) && ($_POST['documentID'] != '')){
  			$document = new Document(new NamedArguments(array('primaryKey' => $_POST['documentID'])));
@@ -61,6 +60,10 @@ switch ($_GET['action']) {
 			$document->effectiveDate = date("Y-m-d", strtotime($_POST['effectiveDate']));
 		}else{
 			$document->effectiveDate= 'null';
+		}
+
+		if ((isset($_POST['revisionDate'])) && ($_POST['revisionDate'] != '')){
+			$document->revisionDate = date("Y-m-d", strtotime($_POST['revisionDate']));
 		}
 
 
@@ -460,9 +463,6 @@ switch ($_GET['action']) {
 
 
     case 'submitLicense':
-echo '<pre>';
-print_r($_REQUEST);
-echo '</pre>';
 
     	//may have been sent through despite missing license name or provider- do check here to make sure that isn't the case before insert into DB
     	if (isset($_POST['shortName'])  && ($_POST['shortName'] != '')) {
@@ -477,6 +477,7 @@ echo '</pre>';
 				$license = new License();
 				$license->licenseID  = '';
 				$license->createDate = date( 'Y-m-d H:i:s' );
+				$license->createLoginID = $user->primaryKey;
 				$license->statusID='';
 				$license->statusDate = date( 'Y-m-d H:i:s' );
 //				$response = "License Added Successfully.<br />Please continue to upload documents and add expressions or emails.";
@@ -490,6 +491,7 @@ echo '</pre>';
 //			$license->consortiumID		= $_POST['consortiumID'];
 			$license->typeID		= $_POST['documentTypeID'];
 			$license->statusDate = date( 'Y-m-d H:i:s' );
+			$license->statusLoginID = $user->primaryKey;
 			//this method will save to either organization or provider depending on the settings
 			//also, if this organization or provider doesn't exist it will create a new org/provider
 			$license->setOrganization($_POST['organizationID'], $_POST['organizationName']);
@@ -515,6 +517,7 @@ echo '</pre>';
 					$document->documentID = '';
 //					$document->expirationDate = '';
 					$document->effectiveDate = date( 'Y-m-d H:i:s' );
+					$document->revisionDate = ($_POST['revisionDate']) ? $_POST['revisionDate']:NULL;
 
 					$document->shortName=$_POST['shortName'];
 					$document->documentTypeID=$_POST['documentTypeID'];

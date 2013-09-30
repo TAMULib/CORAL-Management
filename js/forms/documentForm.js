@@ -153,7 +153,7 @@ function doSubmitDocument(){
 		 type:       "POST",
 		 url:        "ajax_processing.php?action=submitDocument",
 		 cache:      false,
-		 data:       { effectiveDate: $("#effectiveDate").val(), documentTypeID: $("#documentTypeID").val(), parentDocumentID: $("#parentDocumentID").val(), shortName: $("#shortName").val(), uploadDocument: fileName, archiveInd: getCheckboxValue('archiveInd'), licenseID: $("#licenseID").val(), documentID: $("#documentID").val() },
+		 data:       { effectiveDate: $("#effectiveDate").val(),revisionDate: $("#revisionDate").val(), documentTypeID: $("#documentTypeID").val(), parentDocumentID: $("#parentDocumentID").val(), shortName: $("#shortName").val(), uploadDocument: fileName, archiveInd: getCheckboxValue('archiveInd'), licenseID: $("#licenseID").val(), documentID: $("#documentID").val() },
 		 success:    function(html) {
 			if (html){
 				$("#span_errors").html(html);

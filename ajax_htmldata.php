@@ -76,8 +76,8 @@ switch ($_GET['action']) {
 		}
 //		echo "Category:  " . $license->getConsortiumName();
 		echo "<br />Description:  " . $license->description();
-		echo "<br />Creation Date:  " . format_date($license->createDate());
-		echo "<br />Last Update:  " . format_date($license->statusDate());
+		echo "<br />Creation Date:  " . format_date($license->createDate())." ({$license->createLoginID})";
+		echo "<br />Last Update:  " . format_date($license->statusDate())." ({$license->statusLoginID})";
 		
 		?>
 		</div>
@@ -815,11 +815,17 @@ switch ($_GET['action']) {
 					$classAdd="";
 				}
 				$numrows++;
-
+/*
 				if (($document->effectiveDate == "0000-00-00") || ($document->effectiveDate == "")){
 					$displayEffectiveDate = '';
 				}else{
 					$displayEffectiveDate = format_date($document->effectiveDate);
+				}
+*/
+				if (($document->revisionDate == "0000-00-00") || ($document->revisionDate == "")){
+					$displayRevisionDate = '';
+				}else{
+					$displayRevisionDate = format_date($document->revisionDate);
 				}
 
 				if (($document->expirationDate != "0000-00-00") && ($document->expirationDate != "")){
@@ -832,7 +838,7 @@ switch ($_GET['action']) {
 				echo "<tr>";
 				echo "<td $classAdd>" . $document->shortName . "</td>";
 				echo "<td $classAdd>" . $documentType->shortName . "</td>";
-				echo "<td $classAdd>" . $displayEffectiveDate . "</td>";
+				echo "<td $classAdd>" . $displayRevisionDate . "</td>";
 //				echo "<td $classAdd>";
 //
 //				$signature = array();
