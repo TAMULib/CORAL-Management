@@ -23,8 +23,6 @@
 ** each form should have a corresponding javascript file located in /js/forms/
 **************************************************************************************************************************
 */
-error_reporting(E_ALL ^ E_NOTICE);
-ini_set('display_errors','stdout');
 include_once 'directory.php';
 include_once 'user.php';
 

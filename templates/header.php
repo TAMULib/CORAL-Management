@@ -99,13 +99,41 @@ $coralURL = $util->getCORALURL();
 <tr style='vertical-align:top'>
 <td style='width:870px;height:19px;'>
 <?php
-if ($user->isAdmin()){ ?>
-	<a href='index.php'><img src="images/menu/menu-home<?php if ($currentPage == 'index.php') { echo "-on"; } ?>.gif" hover="images/menu/menu-home-over.gif" class="rollover" /></a><img src='images/menu/menu-bar.gif'><a href='ajax_forms.php?action=getLicenseForm&height=350&width=300&modal=true&newLicenseID=' class='thickbox' id='newLicense'><img src='images/menu/menu-newlicense.gif' hover="images/menu/menu-newlicense-over.gif" class="rollover"></a><img src='images/menu/menu-bar.gif'><a href='admin.php'><img src='images/menu/menu-admin<?php if ($currentPage == 'admin.php') { echo "-on"; } ?>.gif' hover="images/menu/menu-admin-over.gif" id="menu-last" class="rollover" /></a><img src='images/menu/menu-end<?php if ($currentPage == 'admin.php') { echo "-on"; } ?>.gif' hover="images/menu/menu-end-over.gif" id="menu-end" />
+//build main navigation basee on user privileges
+if ($user->isAdmin()){
+	$mainnav = array(array("name"=>"home","path"=>"index.php"),
+					 array("name"=>"new document","path"=>"ajax_forms.php?action=getLicenseForm&height=530&width=400&modal=true&newLicenseID=","thickbox"=>true,"cssid"=>"newLicense"),
+					 array("name"=>"admin","path"=>"admin.php"));
+
+} elseif ($user->canEdit()) {
+	$mainnav = array(array("name"=>"home","path"=>"index.php"),
+					 array("name"=>"new document","path"=>"ajax_forms.php?action=getLicenseForm&height=265&width=260&modal=true&newLicenseID=","thickbox"=>true,"cssid"=>"newLicense"),
+					 array("name"=>"compare","path"=>"compare.php"));
+} else {
+	$mainnav = array(array("name"=>"home","path"=>"index.php"),
+					 array("name"=>"in progress","path"=>"in_progress.php"));
+}
+//display main navigation
+echo '<div class="mainnav">';
+foreach ($mainnav as $nav) {
+	$attributes = NULL;
+	if ($nav['thickbox'] && $nav['cssid']) {
+		$attributes = " class=\"thickbox\" id=\"{$nav['cssid']}\"";
+	} elseif ($nav['path'] == $currentPage) {
+		$attributes = ' class="active"';
+	}
+	echo "<a".(($attributes) ? $attributes:'')." href=\"{$nav['path']}\">{$nav['name']}</a>";
+}
+echo '</div>';
+/* Old nav code
+<a href='index.php'><img src="images/menu/menu-home<?php if ($currentPage == 'index.php') { echo "-on"; } ?>.gif" hover="images/menu/menu-home-over.gif" class="rollover" /></a><img src='images/menu/menu-bar.gif'><a href='ajax_forms.php?action=getLicenseForm&height=350&width=300&modal=true&newLicenseID=' class='thickbox' id='newLicense'><img src='images/menu/menu-newlicense.gif' hover="images/menu/menu-newlicense-over.gif" class="rollover"></a><img src='images/menu/menu-bar.gif'><a href='admin.php'><img src='images/menu/menu-admin<?php if ($currentPage == 'admin.php') { echo "-on"; } ?>.gif' hover="images/menu/menu-admin-over.gif" id="menu-last" class="rollover" /></a><img src='images/menu/menu-end<?php if ($currentPage == 'admin.php') { echo "-on"; } ?>.gif' hover="images/menu/menu-end-over.gif" id="menu-end" />
 <?php }else if ($user->canEdit()){ ?>
 	<a href='index.php'><img src="images/menu/menu-home<?php if ($currentPage == 'index.php') { echo "-on"; } ?>.gif" hover="images/menu/menu-home-over.gif" class="rollover" /></a><img src='images/menu/menu-bar.gif'><a href='ajax_forms.php?action=getLicenseForm&height=265&width=260&modal=true&newLicenseID=' class='thickbox' id='newLicense'><img src='images/menu/menu-newlicense.gif' hover="images/menu/menu-newlicense-over.gif" class="rollover" id="menu-last" class="rollover" /></a><img src='images/menu/menu-end<?php if ($currentPage == 'compare.php') { echo "-on"; } ?>.gif' hover="images/menu/menu-end-over.gif" id="menu-end" />
 <?php }else{ ?>
 	<a href='index.php'><img src="images/menu/menu-home<?php if ($currentPage == 'index.php') { echo "-on"; } ?>.gif" hover="images/menu/menu-home-over.gif" class="rollover" /></a><img src='images/menu/menu-bar.gif'><a href='in_progress.php'><img src="images/menu/menu-licensesinprogress<?php if ($currentPage == 'in_progress.php') { echo "-on"; } ?>.gif" hover="images/menu/menu-licensesinprogress-over.gif" id="menu-last" class="rollover" /></a><img src='images/menu/menu-end<?php if ($currentPage == 'in_progress.php') { echo "-on"; } ?>.gif' hover="images/menu/menu-end-over.gif" id="menu-end" />
 <?php } ?>
+*/
+?>
 </td>
 
 <td style='width:130px;height:19px;' align='right'>
