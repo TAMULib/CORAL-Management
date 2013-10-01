@@ -23,6 +23,8 @@
 ** each form should have a corresponding javascript file located in /js/forms/
 **************************************************************************************************************************
 */
+error_reporting(E_ALL ^ E_NOTICE);
+ini_set('display_errors','stdout');
 include_once 'directory.php';
 include_once 'user.php';
 
@@ -31,30 +33,50 @@ switch ($_GET['action']) {
 
 	//form to edit license record
     case 'getLicenseForm':
-		if (isset($_GET['licenseID'])) $licenseID = $_GET['licenseID']; else $licenseID = '';
-
+		if (isset($_GET['licenseID'])) {
+			$licenseID = $_GET['licenseID']; 
+		} else {
+			$licenseID = '';
+		}
 		$license = new License(new NamedArguments(array('primaryKey' => $licenseID)));
-		if ($licenseID) $organizationName = $license->getOrganizationName; else $organizationName = '';
-
-		?>
+		if ($licenseID) {
+			$organizationName = $license->getOrganizationName;
+		} else {
+			$organizationName = '';
+		}
+		//a new note can be added along with the initial document creation, but not when we're editing a document
+		if (!$licenseID) {
+	 		$note = new Note(new NamedArguments(array('tableName'=>'document_notes','primaryKeyName'=>'noteID')));
+			$types = $note->getTypes();
+		}
+?>
 		<div id='div_licenseForm'>
-		<form id='licenseForm'>
-		<input type='hidden' id='editLicenseID' name='editLicenseID' value='<?php echo $licenseID; ?>'>
-		<input type='hidden' id='editLicenseForm' name='editLicenseForm' value='Y'>
-		<table class="thickboxTable" style="width:300px;">
-		<tr>
-		<td colspan='2'><span id='headerText' class='headerText'><?php if ($licenseID) echo "Edit "; else echo "New " ?>Document</span><br /></td>
-		</tr>
-
-		<tr>
-		<td colspan='2'><label for="shortName" class="formText">Name:</label>  <span id='span_error_licenseShortName' class='errorText'></span><br /><input type='textbox' id = 'licenseShortName' value=<?php echo $license->shortName; ?>></td>
-		</tr>
-		<tr>
-		<td colspan='2'><label for="description" class="formText">Description:</label>  <span id='span_error_licenseDescription' class='errorText'></span><br /><textarea name='licenseDescription' id = 'licenseDescription' cols='38' rows='2'><?php echo $license->description; ?></textarea></td>
-		</tr>
-
-		<input type='hidden' id='licenseOrganizationID' name='licenseOrganizationID' value='<?php echo '0'; ?>'>		
-		<input type='hidden' id='organizationName' name='organizationName' value='<?php echo 'Default Internal'; ?>'>		
+			<form id='licenseForm'>
+				<input type='hidden' id='editLicenseID' name='editLicenseID' value='<?php echo $licenseID; ?>'>
+				<input type='hidden' id='editLicenseForm' name='editLicenseForm' value='Y'>
+				<table class="thickboxTable" style="width:300px;">
+					<tr>
+						<td colspan='2'>
+							<span id='headerText' class='headerText'><?php if ($licenseID) echo "Edit "; else echo "New " ?>Document</span><br />
+						</td>
+					</tr>
+			
+					<tr>
+						<td colspan='2'>
+							<label for="shortName" class="formText">Name:</label>
+							<span id='span_error_licenseShortName' class='errorText'></span><br />
+							<input type='textbox' id = 'licenseShortName' value=<?php echo $license->shortName; ?>>
+						</td>
+					</tr>
+					<tr>
+						<td colspan='2'>
+							<label for="description" class="formText">Description:</label>
+							<span id='span_error_licenseDescription' class='errorText'></span><br />
+							<textarea name='licenseDescription' id = 'licenseDescription' cols='38' rows='2'><?php echo $license->description; ?></textarea>
+						</td>
+					</tr>
+					<input type='hidden' id='licenseOrganizationID' name='licenseOrganizationID' value='<?php echo '0'; ?>'>		
+					<input type='hidden' id='organizationName' name='organizationName' value='<?php echo 'Default Internal'; ?>'>		
 <!--
 		<tr>
 		<td colspan='2'><label for="licenseOrganizationID" class="formText">Publisher / Provider:</label>  <span id='span_error_organizationName' class='errorText'></span><br />
@@ -65,144 +87,172 @@ switch ($_GET['action']) {
 		</td>
 		</tr>
 -->
-
 <?php 
 		//if not editing
 		if (!$licenseID){
 ?>		
-		<tr>
-		<td colspan='2'><label for="documentType" class="formText">Type:</label><br />
-		<span id='span_error_documentTypeID' class='errorText'></span>
-		<span id='span_documentType'>
-		<select name='docTypeID' id='docTypeID' style='width:185px;'>
+					<tr>
+						<td colspan='2'>
+							<label for="documentType" class="formText">Type:</label><br />
+							<span id='span_error_documentTypeID' class='errorText'></span>
+							<span id='span_documentType'>
+								<select name='docTypeID' id='docTypeID' style='width:185px;'>
 		<?php
-
 		$display = array();
 		$documentType = new DocumentType();
 
 		foreach($documentType->allAsArray() as $display) {
 			if ($license->typeID == $display['documentTypeID']){
-				echo "<option value='" . $display['documentTypeID'] . "' selected>" . $display['shortName'] . "</option>";
+				echo "				<option value='" . $display['documentTypeID'] . "' selected>" . $display['shortName'] . "</option>";
 			}else{
-				echo "<option value='" . $display['documentTypeID'] . "'>" . $display['shortName'] . "</option>";
+				echo "				<option value='" . $display['documentTypeID'] . "'>" . $display['shortName'] . "</option>";
 			}
 		}
-
-		?>
-		</select>
-		</span>
-		<br />
-		<span id='span_newDocumentType'><a href="javascript:newDocumentType();">add type</a></span>
-		<br />
-		</td>
-		</tr>
-		<tr>
-			<td><label for="revisionDate" class="formText">Revision Date:</label></td>
-			<td><input class="date-pick" type='input' id='revisionDate' name='revisionDate' /></td>
-		</tr>
-
+?>
+								</select>
+							</span>
+							<br />
+							<span id='span_newDocumentType'><a href="javascript:newDocumentType();">add type</a></span>
+							<br />
+						</td>
+					</tr>
+					<tr>
+						<td><label for="revisionDate" class="formText">Revision Date:</label></td>
+						<td><input class="date-pick" type='input' id='revisionDate' name='revisionDate' /></td>
+					</tr>
 <?php 
 		//if editing
 		} else {
 ?>
-			<input type='hidden' id='docTypeID' name='docTypeID' value='<?php echo $license->typeID; ?>'>
+					<input type='hidden' id='docTypeID' name='docTypeID' value='<?php echo $license->typeID; ?>'>
 <?php		
 		}
 ?>		
 		
-		<tr>
-		<td colspan='2'><label for="consortiumID" class="formText">Categories:</label><br />
-		<span id='span_consortium'>
-		<?php
+					<tr>
+						<td colspan='2'>
+							<label for="consortiumID" class="formText">Categories:</label><br />
+							<span id='span_consortium'>
+<?php
 		try{
 			$consortiaArray = array();
 			$consortiaArray=$license->getConsortiumList()
 
-			?>
-			<select name='licenseConsortiumID' id='licenseConsortiumID' multiple='multiple'>
-			<?php
-
-
+?>
+								<select name='licenseConsortiumID' id='licenseConsortiumID' multiple='multiple'>
+<?php
 			$display = array();
 
 			$licenseconsortiumids = $license->getConsortiumsByLicense();
 
 			foreach($consortiaArray as $display) {
 				if (is_array($licenseconsortiumids) && in_array($display['consortiumID'],$licenseconsortiumids)) {
-					echo "<option value='" . $display['consortiumID'] . "' selected>" . $display['name'] . "</option>";
+					echo "			<option value='" . $display['consortiumID'] . "' selected>" . $display['name'] . "</option>";
 				}else{
-					echo "<option value='" . $display['consortiumID'] . "'>" . $display['name'] . "</option>";
+					echo "			<option value='" . $display['consortiumID'] . "'>" . $display['name'] . "</option>";
 				}
 			}
 
-			?>
-			</select>
-		<?php
+?>
+								</select>
+<?php
 		}catch(Exception $e){
-			echo "<span style='color:red'>There was an error processing this request - please verify configuration.ini is set up for organizations correctly and the database and tables have been created.</span>";
+			echo "				<span style='color:red'>There was an error processing this request - please verify configuration.ini is set up for organizations correctly and the database and tables have been created.</span>";
 		}
-		?>
-		</span>
+?>
+							</span>
 
-		<?php
+<?php
 		$config = new Configuration;
 
 		//if the org module is not installed allow to add consortium from this screen
 		if (($config->settings->organizationsModule == 'N') || (!$config->settings->organizationsModule)){
-		?>
-		<br />
-		<span id='span_newConsortium'><a href="javascript:newConsortium();">add category</a></span>
-		<?php } ?>
+?>
+							<br />
+							<span id='span_newConsortium'><a href="javascript:newConsortium();">add category</a></span>
+<?php 	
+		} 
+?>
 
-		</td>
-		</tr>	
-
-		
-
-		<?php
+						</td>
+					</tr>	
+<?php
 		//if editing
-		if ($licenseID){
+//		if ($licenseID){
 		//	echo "<div id='div_uploadFile'>" . $document->documentURL . "<br /><a href='javascript:replaceFile();'>replace with new file</a>";
 		//	echo "<input type='hidden' id='upload_button' name='upload_button' value='" . $document->documentURL . "'></div>";
-		}else{
-		?>
-		<tr>
-		<td><label for="uploadDocument" class="formText">File:</label></td>
-		<td>
-
-
-		<?php
-			echo "<div id='div_uploadFile'><input type='file' name='upload_button' id='upload_button'></div>";
-		}		
-
-		?>
-		<span id='div_file_message'></span>
-		<span id='span_error_licenseuploadDocument' class='errorText'></span>
-		</td>
-		</tr>
-		<tr>
-			<td><label for="archiveInd" class="formText">Archived:</label></td>
-			<td><input type='checkbox' id='archiveInd' name='archiveInd' value='1' /></td>
-		</tr>
-
-		<tr style="vertical-align:middle;">
-		<td style="padding-top:8px;"><input type='button' value='submit' name='submitLicense' id ='submitLicense'></td>
-		<td style="padding-top:8px;padding-right:8px;text-align:right;"><input type='button' value='cancel' onclick="tb_remove()"></td>
-		</tr>
-		</table>
-
-		
-		<script type="text/javascript" src="js/forms/licenseForm.js?random=<?php echo rand(); ?>"></script>
-		</form>
+//		}else{
+?>
+					<tr>
+						<td>
+							<label for="uploadDocument" class="formText">File:</label>
+						</td>
+						<td>
+<?php
+			echo "			<div id='div_uploadFile'><input type='file' name='upload_button' id='upload_button'></div>";
+//		}		
+?>
+							<span id='div_file_message'></span>
+							<span id='span_error_licenseuploadDocument' class='errorText'></span>
+						</td>
+					</tr>
+					<tr>
+						<td><label for="archiveInd" class="formText">Archived:</label></td>
+						<td><input type='checkbox' id='archiveInd' name='archiveInd' value='1' /></td>
+					</tr>
+				</table>
+<?php
+		//only show the new note option if we're creating a new document
+		if (!$licenseID) {
+?>
+				<a href="#addNote" class="sectiontoggle">Add Optional Note</a>
+				<div id="addNote" class="hidden">
+					<table style="width:300px;">
+						<tr>
+							<td colspan='2'>
+								<span id='span_errors'></span><br />
+							</td>
+						</tr>
+						<tr>
+							<td colspan='2'>
+								<label for="notetitle" class="formText">Title:</label><br /><input type='text' name='notetitle' id = 'notetitle' />
+							</td>
+						</tr>
+						<tr>
+							<td colspan='2'>
+								<label for="notebody" class="formText">Body:</label><br /><textarea name='notebody' id = 'notebody' cols='44' rows='10'></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td colspan='2'>
+<?php
+			if ($types) {
+				echo '			<select id="notetypeid" name="notetypeid">
+									<option value="0">Select a type</option>';
+				foreach ($types as $typeid=>$type) {
+					echo "			<option value=\"{$typeid}\">{$type}</option>";
+				}
+				echo '			</select>';
+			}
+?>
+							</td>
+						</tr>
+					</table>
+<?php
+		}
+?>
+				</div>
+				<table style="width:300px;">
+					<tr style="vertical-align:middle;">
+						<td style="padding-top:8px;"><input type='button' value='submit' name='submitLicense' id ='submitLicense'></td>
+						<td style="padding-top:8px;padding-right:8px;text-align:right;"><input type='button' value='cancel' onclick="tb_remove()"></td>
+					</tr>
+				</table>
+				<script type="text/javascript" src="js/forms/licenseForm.js?random=<?php echo rand(); ?>"></script>
+			</form>
 		</div>
-
-		<?php
-
-        break;
-
-
-
-
+<?php
+	break;
 	//form to edit/upload documents
     case 'getUploadDocument':
 
@@ -958,8 +1008,8 @@ switch ($_GET['action']) {
 		if ($types) {
 			echo '<select id="notetypeid" name="notetypeid">
 					<option value="0">Select a type</option>';
-			foreach ($types as $type) {
-				echo "<option value=\"{$type['typeID']}\"".(($note->typeID == $type['typeID']) ? ' selected="selected"':'').">{$type['name']}</option>";
+			foreach ($types as $typeid=>$type) {
+				echo "<option value=\"{$typeid}\"".(($note->typeID == $typeid) ? ' selected="selected"':'').">{$type}</option>";
 			}
 			echo '</select>';
 		}

@@ -440,3 +440,7 @@ table.borderedFormTable th {
 }
 
 table.borderedFormTable tr {vertical-align: top;}
+
+.hidden {
+	display: none;
+}

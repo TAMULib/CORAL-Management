@@ -483,7 +483,6 @@ switch ($_GET['action']) {
 //				$response = "License Added Successfully.<br />Please continue to upload documents and add expressions or emails.";
 				$response = "Document Added Successfully.";
 
-				
 			}
 
 			$license->shortName			= $_POST['shortName'];
@@ -531,12 +530,31 @@ switch ($_GET['action']) {
 						$document->expirationDate = '';
 					}
 
-
 					try {
 						$document->save();
 					} catch (Exception $e) {
 						//echo $e->POSTMessage();
 						echo $e;						
+					}
+
+					if ($_POST['notetitle'] && $_POST['notebody'] ) {
+			 			$note = new Note(new NamedArguments(array('tableName'=>'document_notes','primaryKeyName'=>'noteID')));
+			 			$note->noteID = '';
+						$note->createDate 	=  date( 'Y-m-d H:i:s' );
+						$note->licenseID = $licenseID;
+						//avoid null values for notetypeid
+						if ($_POST['notetypeid'] == NULL) {
+							$_POST['notetypeid'] = 0;
+						}
+						foreach (array('notetypeid'=>'typeID','notetitle'=>'title','notebody'=>'body') as $name=>$dbfield) {
+			 				$note->$dbfield = $_POST[$name];
+						}
+
+						try {
+							$note->save();
+						} catch (Exception $e) {
+							echo $e;						
+						}
 					}
 				}
 				?>

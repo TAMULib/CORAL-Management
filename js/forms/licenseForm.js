@@ -18,6 +18,11 @@
 
 $(function(){
 
+	$(".sectiontoggle").click(function(e) {
+		e.preventDefault();
+		$($(this).attr("href")).fadeIn("fast");
+	});
+
 	//check this name to make sure it isn't already being used
 	$("#licenseShortName").keyup(function() {
 		  $.ajax({
@@ -176,8 +181,8 @@ function doSubmitLicense(){
 		} else {
 			archiveval = 0;
 		}
-	$.post("ajax_processing.php?action=submitLicense", { licenseID: $("#editLicenseID").val(),description: $("#licenseDescription").val(),shortName: $("#licenseShortName").val(), organizationID: $("#licenseOrganizationID").val(), organizationName: $("#organizationName").val(), consortiumID: $("#licenseConsortiumID").val(), documentTypeID: $("#docTypeID").val(), uploadDocument: fileName, archiveInd: archiveval } ,
-		function(data){$("#div_licenseForm").html(data);});
+		$.post("ajax_processing.php?action=submitLicense", { licenseID: $("#editLicenseID").val(),description: $("#licenseDescription").val(),shortName: $("#licenseShortName").val(), organizationID: $("#licenseOrganizationID").val(), organizationName: $("#organizationName").val(), consortiumID: $("#licenseConsortiumID").val(), documentTypeID: $("#docTypeID").val(), uploadDocument: fileName, archiveInd: archiveval, notetitle: $("#notetitle").val(), notebody: $("#notebody").val(), notetypeid: $("#notetypeid").val() } ,
+			function(data){$("#div_licenseForm").html(data);});
 	} else {
 		alert("No DocumentTypeID");
 	}
