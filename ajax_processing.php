@@ -62,7 +62,7 @@ switch ($_GET['action']) {
 			$document->effectiveDate= 'null';
 		}
 
-		if ((isset($_POST['revisionDate'])) && ($_POST['revisionDate'] != '')){
+		if ((isset($_POST['revisionDate'])) && ($_POST['revisionDate'] != '')) {
 			$document->revisionDate = date("Y-m-d", strtotime($_POST['revisionDate']));
 		}
 
@@ -516,7 +516,11 @@ switch ($_GET['action']) {
 					$document->documentID = '';
 //					$document->expirationDate = '';
 					$document->effectiveDate = date( 'Y-m-d H:i:s' );
-					$document->revisionDate = ($_POST['revisionDate']) ? $_POST['revisionDate']:NULL;
+//					$document->revisionDate = ($_POST['revisionDate']) ? $_POST['revisionDate']:NULL;
+					if ((isset($_POST['revisionDate'])) && ($_POST['revisionDate'] != '')) {
+						$document->revisionDate = date("Y-m-d", strtotime($_POST['revisionDate']));
+					}
+
 
 					$document->shortName=$_POST['shortName'];
 					$document->documentTypeID=$_POST['documentTypeID'];

@@ -308,7 +308,7 @@ class License extends DatabaseObject {
       if ($count) {
         $select = "SELECT COUNT(DISTINCT L.licenseID) count";
       } else {
-        $select = "SELECT distinct DT.shortName as Type, D.effectiveDate, L.licenseID, L.shortName licenseName, O2.name consortiumName, O.name providerName, S.shortName status";
+        $select = "SELECT distinct DT.shortName as Type, D.effectiveDate, L.licenseID, L.shortName licenseName, O.name providerName, S.shortName status";
       }
 			//now formulate query
 			$query = $select . "
@@ -327,12 +327,12 @@ class License extends DatabaseObject {
       if ($count) {
         $select = "SELECT COUNT(DISTINCT L.licenseID) count";
       } else {
-        $select = "SELECT distinct DT.shortName as Type, D.effectiveDate, L.licenseID, L.shortName licenseName, C.shortName consortiumName, O.shortName providerName, S.shortName status";
+        $select = "SELECT distinct DT.shortName as Type, D.effectiveDate, L.licenseID, L.shortName licenseName, O.shortName providerName, S.shortName status";
       }
 			//now formulate query
 			$query = $select . "
 									FROM Organization O, License L
-									LEFT JOIN Consortium C ON (C.consortiumID = L.consortiumID)
+									LEFT JOIN `license_consortium` lc ON (lc.`licenseID` = L.`licenseID`)
 									LEFT JOIN Status S ON (S.statusID = L.statusID)
 									LEFT JOIN Document D ON (D.licenseID = L.licenseID)
 									LEFT JOIN DocumentType DT ON (DT.documentTypeID = L.TypeID)									
