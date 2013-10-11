@@ -26,11 +26,13 @@ class Note extends DatabaseObject {
 	public function getTypes() {
 		$sql = "SELECT * FROM `document_notes_types` ORDER BY `name`";
 		if ($result = $this->db->processQuery($sql,'assoc')) {
-			if (sizeof($result) > 1) {
+			// SizeOf fails with only 1 record. Switch to num_rows
+			if (($result->num_rows) > 1) {
 				$temp = array();
-				foreach ($result as $row) {
-					$temp[$row['typeID']] = $row['name'];				
-				}				
+					foreach ($result as $row) {
+						$resultArray[$attributeName] = $row[$attributeName];
+						$temp[$row['typeID']] = $row['name'];	
+					}	
 				return $temp;
 			} else {
 				return array($result['typeID']=>$result['name']);				
