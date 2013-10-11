@@ -30,7 +30,6 @@ class Note extends DatabaseObject {
 			if (($result->num_rows) > 1) {
 				$temp = array();
 					foreach ($result as $row) {
-						$resultArray[$attributeName] = $row[$attributeName];
 						$temp[$row['typeID']] = $row['name'];	
 					}	
 				return $temp;
