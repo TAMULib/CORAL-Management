@@ -337,7 +337,6 @@ class License extends DatabaseObject {
 									LEFT JOIN Document D ON (D.licenseID = L.licenseID)
 									LEFT JOIN DocumentType DT ON (DT.documentTypeID = L.TypeID)									
 									LEFT JOIN Expression E ON (D.documentID = E.documentID)
-									LEFT JOIN `license_consortium` lc ON (lc.`licenseID` = L.`licenseID`)
 									WHERE O.organizationID = L.organizationID and D.expirationDate is null
 									" . $whereStatement;
 
@@ -350,8 +349,6 @@ class License extends DatabaseObject {
 		if ($limit) {
   	  $query .= "\nLIMIT " . $limit;
 		}
-		
-//		echo $query.'<br />';
 		
 		return $query;
   }

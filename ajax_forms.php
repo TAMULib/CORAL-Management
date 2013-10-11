@@ -130,6 +130,7 @@ switch ($_GET['action']) {
 					<tr>
 						<td colspan='2'>
 							<label for="consortiumID" class="formText">Categories:</label><br />
+							<span id='span_error_licenseConsortiumID' class='errorText'></span><br />
 							<span id='span_consortium'>
 <?php
 		try{
@@ -176,10 +177,11 @@ switch ($_GET['action']) {
 					</tr>	
 <?php
 		//if editing
-//		if ($licenseID){
-		//	echo "<div id='div_uploadFile'>" . $document->documentURL . "<br /><a href='javascript:replaceFile();'>replace with new file</a>";
-		//	echo "<input type='hidden' id='upload_button' name='upload_button' value='" . $document->documentURL . "'></div>";
-//		}else{
+		if ($licenseID) {
+			// No Editing of file from Main page
+			//echo "<div id='div_uploadFile'>" . $document->documentURL . "<br /><a href='javascript:replaceFile();'>replace with new file</a>";
+			//echo "<input type='hidden' id='upload_button' name='upload_button' value='" . $document->documentURL . "'></div>";
+		} else {
 ?>
 					<tr>
 						<td>
@@ -188,7 +190,7 @@ switch ($_GET['action']) {
 						<td>
 <?php
 			echo "			<div id='div_uploadFile'><input type='file' name='upload_button' id='upload_button'></div>";
-//		}		
+	}		
 ?>
 							<span id='div_file_message'></span>
 							<span id='span_error_licenseuploadDocument' class='errorText'></span>
@@ -236,16 +238,18 @@ switch ($_GET['action']) {
 							</td>
 						</tr>
 					</table>
+
+			</div>
 <?php
 		}
 ?>
-				</div>
 				<table style="width:300px;">
 					<tr style="vertical-align:middle;">
 						<td style="padding-top:8px;"><input type='button' value='submit' name='submitLicense' id ='submitLicense'></td>
 						<td style="padding-top:8px;padding-right:8px;text-align:right;"><input type='button' value='cancel' onclick="tb_remove()"></td>
 					</tr>
 				</table>
+		
 				<script type="text/javascript" src="js/forms/licenseForm.js?random=<?php echo rand(); ?>"></script>
 			</form>
 		</div>

@@ -471,7 +471,7 @@ switch ($_GET['action']) {
 				//update data
 				$license = new License(new NamedArguments(array('primaryKey' => $_POST['licenseID'])));
 				$response = "Document Updated Successfully.";
-//doug
+
 			}else{
 				//add data
 				$license = new License();

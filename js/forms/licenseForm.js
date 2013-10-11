@@ -248,6 +248,7 @@ function validateForm (){
 	myReturn=0;
 	
 	if (!validateRequired('licenseShortName','License Name is required.')) myReturn="1";
+	if (!validateRequired('licenseConsortiumID','A Category is required.')) myReturn="1";	
 //	if (!validateRequired('organizationName','Provider is required.')) myReturn="1";
 
 		if ($("#headerText").text().indexOf("Edit") == -1) {
