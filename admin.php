@@ -60,6 +60,18 @@ if ($user->isAdmin()){
 
 <br />
 <br />
+
+<table class="headerTable">
+<tr><td>
+<span class="headerText">Note Types</span>&nbsp;&nbsp;<span id='span_DocumentNoteType_response'></span>
+<br /><span id='span_newDocumentNoteType' class='adminAddInput'><a href='javascript:showAdd("DocumentNoteType");'>add new note type</a></span>
+<br /><br />
+<div id='div_DocumentNoteType'>
+<img src = "images/circle.gif">Loading...
+</div>
+</td></tr>
+</table>
+
 <!--
 <table class="headerTable">
 <tr><td>

@@ -413,13 +413,13 @@ function updateNotesNumber(){
 
  }
 
- function deleteNote(noteID){
+ function deleteNote(documentNoteID){
     if (confirm("Do you really want to delete this note?") == true) {
        $.ajax({
           type:       "GET",
           url:        "ajax_processing.php",
           cache:      false,
-          data:       "action=deleteNote&noteID=" + noteID,
+          data:       "action=deleteNote&documentNoteID=" + documentNoteID,
           success:    function(html) { updateNotes(); }
 
 

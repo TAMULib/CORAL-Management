@@ -212,18 +212,17 @@ class License extends DatabaseObject {
 
 	public function getNotes(){
 
-		$query = "SELECT `noteID` FROM `document_notes` WHERE `licenseID`={$this->primaryKey} ORDER BY `createDate` DESC";
+		$query = "SELECT `documentNoteID` FROM `documentnote` WHERE `licenseID`={$this->primaryKey} ORDER BY `createDate` DESC";
 
 		$result = $this->db->processQuery($query, 'assoc');
-
 		$objects = array();
-		if (is_array($result)) {
+		if (is_array($result[0])) {
 			foreach ($result as $row) {
-				$object = new Note(new NamedArguments(array('primaryKey' => $row['noteID'],'tableName'=>'document_notes','primaryKeyName'=>'noteID')));
+				$object = new DocumentNote(new NamedArguments(array('primaryKey' => $row['documentNoteID'])));
 				array_push($objects, $object);
 			}
 		}else{
-			$object = new Note(new NamedArguments(array('primaryKey' => $result['noteID'],'tableName'=>'document_notes','primaryKeyName'=>'noteID')));
+			$object = new DocumentNote(new NamedArguments(array('primaryKey' => $result['documentNoteID'])));
 			array_push($objects, $object);
 		}
 
@@ -232,7 +231,7 @@ class License extends DatabaseObject {
 
 	public function getNotesCount() {
 		if ($this->primaryKey) {
-			$sql = "SELECT COUNT(*) AS `total` FROM `document_notes` WHERE `licenseID`={$this->primaryKey}";
+			$sql = "SELECT COUNT(*) AS `total` FROM `documentnote` WHERE `licenseID`={$this->primaryKey}";
 			if ($result = $this->db->processQuery($sql,'assoc')) {
 				return $result['total'];
 			}

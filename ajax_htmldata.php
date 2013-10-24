@@ -176,8 +176,9 @@ switch ($_GET['action']) {
 		$licenseID = $_GET['licenseID'];
 		$license = new License(new NamedArguments(array('primaryKey' => $licenseID)));
 		$notes = $license->getNotes();
+
 		if (count($notes) > 0){
-			$types = $notes[0]->getTypes();
+			$documentNoteTypes = new DocumentNoteType(new NamedArguments(array('primaryKeyName'=>'documentNoteTypeID')));
 		?>
 
 		<table class='verticalFormTable'>
@@ -216,11 +217,11 @@ switch ($_GET['action']) {
 					echo "&nbsp;&nbsp;<a href='javascript:hideFullNoteText(\"" . $note->noteID . "\");'>less...</a>";
 				echo "</div>";
 				echo "</td>
-					  <td>{$types[$note->typeID]}</td>";
+					  <td>{$documentNoteType[$note->typeID]['shortName']}</td>";
 
 
 				if ($user->canEdit()){
-					echo "<td><a href='ajax_forms.php?action=getNoteForm&height=398&width=305&modal=true&licenseID=" . $licenseID . "&noteID=" . $note->noteID . "' class='thickbox' id='editNote'>edit</a>&nbsp;&nbsp;<a href='javascript:deleteNote(\"". $note->noteID . "\");'>remove</a></td>";
+					echo "<td><a href='ajax_forms.php?action=getNoteForm&height=398&width=305&modal=true&licenseID=" . $licenseID . "&documentNoteID=" . $note->documentNoteID . "' class='thickbox' id='editNote'>edit</a>&nbsp;&nbsp;<a href='javascript:deleteNote(\"". $note->documentNoteID . "\");'>remove</a></td>";
 				}
 
 				echo "</tr>";
@@ -1317,9 +1318,7 @@ switch ($_GET['action']) {
 	case 'getAdminList':
 		$className = $_GET['tableName'];
 		$instance = new $className();
-
 		$resultArray = $instance->allAsArray();
-
 		if (count($resultArray) > 0){
 			?>
 			<table class='dataTable' style='width:350px'>
@@ -1340,7 +1339,6 @@ switch ($_GET['action']) {
 		}else{
 			echo "(none found)";
 		}
-
 		break;
 
 

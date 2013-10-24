@@ -62,7 +62,6 @@ class DBService extends Object {
 	}
 
 	public function processQuery($sql, $type = NULL) {
-    //echo $sql. "<br />";
     $query_start = microtime(true);
 		$result = mysql_query($sql, $this->db);
 		$query_end = microtime(true);

@@ -23,6 +23,7 @@
 ** each form should have a corresponding javascript file located in /js/forms/
 **************************************************************************************************************************
 */
+
 include_once 'directory.php';
 include_once 'user.php';
 
@@ -44,8 +45,8 @@ switch ($_GET['action']) {
 		}
 		//a new note can be added along with the initial document creation, but not when we're editing a document
 		if (!$licenseID) {
-	 		$note = new Note(new NamedArguments(array('tableName'=>'document_notes','primaryKeyName'=>'noteID')));
-			$types = $note->getTypes();
+	 		$note = new DocumentNote(new NamedArguments(array('primaryKeyName'=>'documentNoteID')));
+	 		$documentNoteType = new DocumentNoteType(new NamedArguments(array('primaryKeyName'=>'documentNoteTypeID')));
 		}
 ?>
 		<div id='div_licenseForm'>
@@ -226,14 +227,13 @@ switch ($_GET['action']) {
 						<tr>
 							<td colspan='2'>
 <?php
-			if ($types) {
-				echo '			<select id="notetypeid" name="notetypeid">
+				echo '			<select id="documentNoteTypeID" name="documentNoteTypeID">
 									<option value="0">Select a type</option>';
-				foreach ($types as $typeid=>$type) {
-					echo "			<option value=\"{$typeid}\">{$type}</option>";
+				foreach($documentNoteType->allAsArray() as $display) {
+					echo "			<option value='" . $display['documentNoteTypeID'] . "'>" . $display['shortName'] . "</option>";
 				}
+
 				echo '			</select>';
-			}
 ?>
 							</td>
 						</tr>
@@ -983,16 +983,20 @@ switch ($_GET['action']) {
 
 	//form to add/edit notes
     case 'getNoteForm':
-
 		//note ID sent in for updates
-		if (isset($_GET['noteID'])) $noteID = $_GET['noteID']; else $noteID = '';
+		if (isset($_GET['documentNoteID'])) {
+			 $documentNoteID = $_GET['documentNoteID']; 
+		} else {
+			 $documentNoteID = '';
+		}
 
-		$note = new Note(new NamedArguments(array('primaryKey' => $noteID,'tableName'=>'document_notes','primaryKeyName'=>'noteID')));
-		$types = $note->getTypes();
+		$note = new DocumentNote(new NamedArguments(array('primaryKey' => $documentNoteID)));
+		$documentNoteType = new DocumentNoteType(new NamedArguments(array('primaryKeyName'=>'documentNoteTypeID')));
+
 		?>
 		<div id='div_noteForm'>
 		<form id='noteForm'>
-		<input type='hidden' id='noteID' name='noteID' value='<?php echo $noteID; ?>'>
+		<input type='hidden' id='documentNoteID' name='documentNoteID' value='<?php echo $documentNoteID; ?>'>
 		<input type='hidden' id='licenseID' name='licenseID' value='<?php echo $_GET['licenseID']; ?>'>
 		<table class="thickboxTable" style="width:300px;">
 			<tr>
@@ -1007,14 +1011,16 @@ switch ($_GET['action']) {
 			<tr>
 				<td colspan='2'>
 <?php
-		if ($types) {
-			echo '<select id="notetypeid" name="notetypeid">
-					<option value="0">Select a type</option>';
-			foreach ($types as $typeid=>$type) {
-				echo "<option value=\"{$typeid}\"".(($note->typeID == $typeid) ? ' selected="selected"':'').">{$type}</option>";
+		echo '		<select id="documentNoteTypeID" name="documentNoteTypeID">
+						<option value="0">Select a type</option>';
+		foreach($documentNoteType->allAsArray() as $display) {
+			if ($note->documentNoteTypeID == $display['documentNoteTypeID']){
+				echo "	<option value='" . $display['documentNoteTypeID'] . "' selected>" . $display['shortName'] . "</option>";
+			}else{
+				echo "	<option value='" . $display['documentNoteTypeID'] . "'>" . $display['shortName'] . "</option>";
 			}
-			echo '</select>';
 		}
+		echo '		</select>';
 ?>
 				</td>
 			</tr>

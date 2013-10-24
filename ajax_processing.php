@@ -542,15 +542,14 @@ switch ($_GET['action']) {
 					}
 
 					if ($_POST['notetitle'] && $_POST['notebody'] ) {
-			 			$note = new Note(new NamedArguments(array('tableName'=>'document_notes','primaryKeyName'=>'noteID')));
-			 			$note->noteID = '';
+			 			$note = new DocumentNote(new NamedArguments(array('primaryKeyName'=>'documentNoteID')));
+			 			$note->documentNoteID = '';
 						$note->createDate 	=  date( 'Y-m-d H:i:s' );
 						$note->licenseID = $licenseID;
 						//avoid null values for notetypeid
-						if ($_POST['notetypeid'] == NULL) {
-							$_POST['notetypeid'] = 0;
-						}
-						foreach (array('notetypeid'=>'typeID','notetitle'=>'title','notebody'=>'body') as $name=>$dbfield) {
+						$note->documentNoteTypeID = ($_POST['documentNoteTypeID']) ? $_POST['documentNoteTypeID']:0;
+
+						foreach (array('notetitle'=>'title','notebody'=>'body') as $name=>$dbfield) {
 			 				$note->$dbfield = $_POST[$name];
 						}
 
@@ -1124,7 +1123,7 @@ switch ($_GET['action']) {
 
      case 'deleteNote':
 
- 		$note = new Note(new NamedArguments(array('primaryKey' => $_GET['noteID'],'tableName'=>'document_notes','primaryKeyName'=>'noteID')));
+ 		$note = new DocumentNote(new NamedArguments(array('primaryKey' => $_GET['documentNoteID'])));
 
 		try {
 			$note->delete();
@@ -1140,18 +1139,18 @@ switch ($_GET['action']) {
     case 'submitNote':
     	//if noteID is sent then this is an update
 
-    	if ((isset($_POST['noteID'])) && ($_POST['noteID'] <> "")){
- 			$note = new Note(new NamedArguments(array('primaryKey' => $_POST['noteID'],'tableName'=>'document_notes','primaryKeyName'=>'noteID')));
+    	if ((isset($_POST['documentNoteID'])) && ($_POST['documentNoteID'] <> "")){
+ 			$note = new DocumentNote(new NamedArguments(array('primaryKey' => $_POST['documentNoteID'])));
     	} else {
- 			$note = new Note(new NamedArguments(array('tableName'=>'document_notes','primaryKeyName'=>'noteID')));
- 			$note->noteID = '';
+ 			$note = new DocumentNote(new NamedArguments(array('primaryKeyName'=>'documentNoteID')));
+ 			$note->documentNoteID = '';
 			$note->createDate 	=  date( 'Y-m-d H:i:s' );
 		}
 
 		$note->title = $_POST['title'];
 		$note->body	= $_POST['body'];
 		$note->licenseID 	= $_POST['licenseID'];
-		$note->typeID 	= $_POST['typeID'];
+		$note->documentNoteTypeID 	= $_POST['documentNoteTypeID'];
 
 
 		try {

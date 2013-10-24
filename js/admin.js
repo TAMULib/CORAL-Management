@@ -22,6 +22,7 @@
       updateForm('Organization');
       updateForm('Consortium');
       updateForm('DocumentType');
+      updateForm('DocumentNoteType');
       updateExpressionTypeList();
       updateForm('SignatureType');  
       updateForm('Status');  

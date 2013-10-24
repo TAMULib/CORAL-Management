@@ -23,7 +23,7 @@ $("#submitNote").click(function () {
 	 url:        "ajax_processing.php?action=submitNote",
 	 cache:      false,
 	 async:      false,
-	 data:       { noteID: $("#noteID").val(), licenseID: $("#licenseID").val(), title: $("#notetitle").val(), body: $("#notebody").val(), typeID: $("#notetypeid").val() } ,
+	 data:       { documentNoteID: $("#documentNoteID").val(), licenseID: $("#licenseID").val(), title: $("#notetitle").val(), body: $("#notebody").val(), documentNoteTypeID: $("#documentNoteTypeID").val() } ,
 	 success:    function(html) {
 		window.parent.tb_remove();
 		window.parent.updateNotes();
