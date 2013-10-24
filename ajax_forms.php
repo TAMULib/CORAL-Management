@@ -115,8 +115,8 @@ switch ($_GET['action']) {
 						</td>
 					</tr>
 					<tr>
-						<td><label for="revisionDate" class="formText">Revision Date:</label></td>
-						<td><input class="date-pick" type='input' id='revisionDate' name='revisionDate' /></td>
+						<td><label for="revisionDate" class="formText">Document Revision Date:</label></td>
+						<td><input class="date-pick" type='input' id='revisionDate' name='revisionDate' value="<?php echo date("m/d/Y");?>" /></td>
 					</tr>
 <?php 
 		//if editing
@@ -301,7 +301,7 @@ switch ($_GET['action']) {
 		</td>
 		</tr>
 		<tr>
-			<td style='text-align:right;vertical-align:top;'><label for="revisionDate" class="formText">Revision Date:</label><br /><span id='span_error_revisionDate' class='errorText'></span></td>
+			<td style='text-align:right;vertical-align:top;'><label for="revisionDate" class="formText">Document Revision Date:</label><br /><span id='span_error_revisionDate' class='errorText'></span></td>
 			<td>
 				<input class='date-pick' id='revisionDate' name='revisionDate' style='width:80px' value='<?php echo $revisionDate; ?>' />
 			</td>
