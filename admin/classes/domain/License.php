@@ -307,7 +307,7 @@ class License extends DatabaseObject {
 			if ($count) {
 		    	$select = "SELECT COUNT(DISTINCT L.licenseID) count";
 		    } else {
-		    	$select = "SELECT distinct DT.shortName as Type, D.effectiveDate, L.licenseID, L.shortName licenseName, O.name providerName, S.shortName status";
+		    	$select = "SELECT distinct DT.shortName as Type, D.revisionDate, L.licenseID, L.shortName licenseName, O.name providerName, S.shortName status";
 		    }
 			//now formulate query
 			$query = $select . " FROM " . $dbName . ".Organization O, License L
@@ -325,7 +325,7 @@ class License extends DatabaseObject {
 			if ($count) {
         		$select = "SELECT COUNT(DISTINCT L.licenseID) count";
 			} else {
-        		$select = "SELECT distinct DT.shortName as Type, D.effectiveDate, L.licenseID, L.shortName licenseName, O.shortName providerName, S.shortName status";
+        		$select = "SELECT distinct DT.shortName as Type, D.revisionDate, L.licenseID, L.shortName licenseName, O.shortName providerName, S.shortName status";
       		}
 			//now formulate query
 			$query = $select . " FROM Organization O, License L

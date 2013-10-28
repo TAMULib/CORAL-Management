@@ -116,7 +116,7 @@ switch ($_GET['action']) {
 						</td>
 					</tr>
 					<tr>
-						<td><label for="revisionDate" class="formText">Document Revision Date:</label></td>
+						<td><label for="revisionDate" class="formText">Last Document Revision:</label></td>
 						<td><input class="date-pick" type='input' id='revisionDate' name='revisionDate' value="<?php echo date("m/d/Y");?>" /></td>
 					</tr>
 <?php 
@@ -271,9 +271,9 @@ switch ($_GET['action']) {
 		}else{
 			$effectiveDate=format_date($document->effectiveDate);
 		}
-
+		//if revision date isn't set, set it today's date
 		if (($document->revisionDate == "0000-00-00") || ($document->revisionDate == "")){
-			$revisionDate = '';
+			$revisionDate = date("m/d/Y");
 		} else {
 			$revisionDate = format_date($document->revisionDate);
 		}
@@ -295,14 +295,9 @@ switch ($_GET['action']) {
 		<td colspan='2'><span class='headerText'>Document Upload</span><br /><span id='span_errors'></span><br /></td>
 		</tr>
 		<tr>
-		<td style='text-align:right;vertical-align:top;'><label for="effectiveDate" class="formText">Effective Date:</label><br /><span id='span_error_effectiveDate' class='errorText'></span></td>
-		<td>
-		<input class='date-pick' id='effectiveDate' name='effectiveDate' style='width:80px' value='<?php echo $effectiveDate; ?>' />
-		</td>
-		</tr>
-		<tr>
-			<td style='text-align:right;vertical-align:top;'><label for="revisionDate" class="formText">Document Revision Date:</label><br /><span id='span_error_revisionDate' class='errorText'></span></td>
+			<td style='text-align:right;vertical-align:top;'><label for="revisionDate" class="formText">Last Document Revision:</label><br /><span id='span_error_revisionDate' class='errorText'></span></td>
 			<td>
+				<input type='hidden' id="effectiveDate" name='effectiveDate' value='<?php echo $effectiveDate; ?>' />
 				<input class='date-pick' id='revisionDate' name='revisionDate' style='width:80px' value='<?php echo $revisionDate; ?>' />
 			</td>
 		</tr>
