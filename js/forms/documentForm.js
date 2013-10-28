@@ -149,11 +149,12 @@ $("#submitDocument").click(function () {
 
 function doSubmitDocument(){
   if (validateForm() === true) {
+		var isArchived = ($("#archiveInd").val() == 1) ? 1:getCheckboxValue('archiveInd');
 	  $.ajax({
 		 type:       "POST",
 		 url:        "ajax_processing.php?action=submitDocument",
 		 cache:      false,
-		 data:       { effectiveDate: $("#effectiveDate").val(),revisionDate: $("#revisionDate").val(), documentTypeID: $("#documentTypeID").val(), parentDocumentID: $("#parentDocumentID").val(), shortName: $("#shortName").val(), uploadDocument: fileName, archiveInd: getCheckboxValue('archiveInd'), licenseID: $("#licenseID").val(), documentID: $("#documentID").val() },
+		 data:       { effectiveDate: $("#effectiveDate").val(),revisionDate: $("#revisionDate").val(), documentTypeID: $("#documentTypeID").val(), parentDocumentID: $("#parentDocumentID").val(), shortName: $("#shortName").val(), uploadDocument: fileName, archiveInd: isArchived, licenseID: $("#licenseID").val(), documentID: $("#documentID").val() },
 		 success:    function(html) {
 			if (html){
 				$("#span_errors").html(html);

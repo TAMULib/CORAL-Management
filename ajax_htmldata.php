@@ -1140,7 +1140,7 @@ switch ($_GET['action']) {
 			if ( $numDug == 0 ) {
 				echo "<a href='ajax_forms.php?action=getUploadDocument&licenseID=" . $licenseID . "&height=310&width=310&modal=true' class='thickbox' id='uploadDocument'>upload new document</a>";
 			} else {
-				echo "Only one active document is allowed.  Archive to upload a new document.";
+				echo "Only one active document is allowed. <a href='ajax_forms.php?action=getUploadDocument&licenseID=" . $licenseID . "&isArchived=1&height=310&width=310&modal=true' class='thickbox' id='uploadDocument'>upload archived document</a>";
 			}
 
 		}

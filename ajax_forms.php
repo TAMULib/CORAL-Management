@@ -265,13 +265,13 @@ switch ($_GET['action']) {
 		$document = new Document(new NamedArguments(array('primaryKey' => $documentID)));
 		$license = new License(new NamedArguments(array('primaryKey' => $licenseID)));
 
-		//some dates get in as 0000-00-00
+		//if effective date isn't set, set it to today's date
 		if (($document->effectiveDate == "0000-00-00") || ($document->effectiveDate == "")){
-			$effectiveDate='';
+			$effectiveDate = date("m/d/Y");
 		}else{
 			$effectiveDate=format_date($document->effectiveDate);
 		}
-		//if revision date isn't set, set it today's date
+		//if revision date isn't set, set it to today's date
 		if (($document->revisionDate == "0000-00-00") || ($document->revisionDate == "")){
 			$revisionDate = date("m/d/Y");
 		} else {
@@ -394,9 +394,21 @@ switch ($_GET['action']) {
 
 		<?php if (($document->parentDocumentID == "0") || ($document->parentDocumentID == "")){ ?>
 		<tr>
-		<td style='text-align:right;vertical-align:top;'><label for="archiveInd" class="formText">Archived:</label></td>
-		<td><input type='checkbox' id='archiveInd' name='archiveInd' <?php echo $archiveChecked; ?> />
-		</td>
+			<td style='text-align:right;vertical-align:top;'><label for="archiveInd" class="formText">Archived:</label></td>
+			<td>
+<?php
+if ($_GET['isArchived'] == 1) {
+?>
+				<input type='checkbox' name='archiveDummy' checked="checked" disabled="disabled" />
+				<input type="hidden" id="archiveInd" name="archiveInd" value="1" />
+<?php
+} else {
+?>
+				<input type='checkbox' id='archiveInd' name='archiveInd' <?php echo $archiveChecked; ?> />
+<?php
+}
+?>
+			</td>
 		</tr>
 		<?php } ?>
 
