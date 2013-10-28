@@ -53,7 +53,7 @@ switch ($_GET['action']) {
 		//make sure they have org module installed before we give them a link to view the organization
 		$config = new Configuration;
 
-		if ($config->settings->organizationsModule == 'Y'){
+		if ($config->settings->organizationsModule == 'Y') {
 			$util = new Utility();
 
 			echo "<div>{$license->getOrganizationName()} <a href=\"{$util->getOrganizationURL()}{$license->organizationID}\" target=\"_blank\">Edit Organization</a></div>";
@@ -68,11 +68,17 @@ switch ($_GET['action']) {
 			} elseif ($license->consortiumID) {
 				echo "<br />" . $license->getConsortiumName();
 			}
-//		}else{
-			//echo $license->getOrganizationName();
-			//if ($license->consortiumID) {
-			//	echo "<br />" . $license->getConsortiumName();
-			//}
+		}else{
+			echo $license->getOrganizationName();
+			if ($licenseconsortiumids = $license->getConsortiumsByLicense()) {
+				echo '<ul>';
+				foreach ($licenseconsortiumids as $cid) {
+					echo "<li>{$license->getConsortiumName($cid)}</li>";
+				}
+				echo '</ul>';
+			} elseif ($license->consortiumID) {
+				echo "<br />" . $license->getConsortiumName();
+			}
 		}
 //		echo "Category:  " . $license->getConsortiumName();
 		echo "<br />Description:  " . $license->description();

@@ -214,19 +214,20 @@ class License extends DatabaseObject {
 
 		$query = "SELECT `documentNoteID` FROM `documentnote` WHERE `licenseID`={$this->primaryKey} ORDER BY `createDate` DESC";
 
-		$result = $this->db->processQuery($query, 'assoc');
-		$objects = array();
-		if (is_array($result[0])) {
-			foreach ($result as $row) {
-				$object = new DocumentNote(new NamedArguments(array('primaryKey' => $row['documentNoteID'])));
+		if ($result = $this->db->processQuery($query, 'assoc')) {
+			$objects = array();
+			if (is_array($result[0])) {
+				foreach ($result as $row) {
+					$object = new DocumentNote(new NamedArguments(array('primaryKey' => $row['documentNoteID'])));
+					array_push($objects, $object);
+				}
+			}else{
+				$object = new DocumentNote(new NamedArguments(array('primaryKey' => $result['documentNoteID'])));
 				array_push($objects, $object);
 			}
-		}else{
-			$object = new DocumentNote(new NamedArguments(array('primaryKey' => $result['documentNoteID'])));
-			array_push($objects, $object);
+			return $objects;
 		}
-
-		return $objects;
+		return false;
 	}
 
 	public function getNotesCount() {
@@ -304,51 +305,49 @@ class License extends DatabaseObject {
 		//if the org module is installed get the org name from org database
 		if ($config->settings->organizationsModule == 'Y') {
 			$dbName = $config->settings->organizationsDatabaseName;
-      if ($count) {
-        $select = "SELECT COUNT(DISTINCT L.licenseID) count";
-      } else {
-        $select = "SELECT distinct DT.shortName as Type, D.effectiveDate, L.licenseID, L.shortName licenseName, O.name providerName, S.shortName status";
-      }
+			if ($count) {
+		    	$select = "SELECT COUNT(DISTINCT L.licenseID) count";
+		    } else {
+		    	$select = "SELECT distinct DT.shortName as Type, D.effectiveDate, L.licenseID, L.shortName licenseName, O.name providerName, S.shortName status";
+		    }
 			//now formulate query
-			$query = $select . "
-									FROM " . $dbName . ".Organization O, License L
-									LEFT JOIN `license_consortium` lc ON (lc.`licenseID` = L.`licenseID`)
-									LEFT JOIN " . $dbName . ".`Organization` O2 ON (O2.`organizationID` = lc.`consortiumID`)
-									LEFT JOIN " . $dbName . ".Alias A ON (A.organizationID = L.organizationID)
-									LEFT JOIN Status S ON (S.statusID = L.statusID)
-									LEFT JOIN Document D ON (D.licenseID = L.licenseID)
-									LEFT JOIN DocumentType DT ON (DT.documentTypeID = L.TypeID)
-									LEFT JOIN Expression E ON (D.documentID = E.documentID)
-									WHERE O.organizationID = L.organizationID and D.expirationDate is null
-									" . $whereStatement;
-
+			$query = $select . " FROM " . $dbName . ".Organization O, License L
+								LEFT JOIN `license_consortium` lc ON (lc.`licenseID` = L.`licenseID`)
+								LEFT JOIN " . $dbName . ".`Organization` O2 ON (O2.`organizationID` = lc.`consortiumID`)
+								LEFT JOIN " . $dbName . ".Alias A ON (A.organizationID = L.organizationID)
+								LEFT JOIN Status S ON (S.statusID = L.statusID)
+								LEFT JOIN Document D ON (D.licenseID = L.licenseID)
+								LEFT JOIN DocumentType DT ON (DT.documentTypeID = L.TypeID)
+								LEFT JOIN Expression E ON (D.documentID = E.documentID)
+								WHERE O.organizationID = L.organizationID and D.expirationDate is null
+								" . $whereStatement;
+		
 		} else {
-      if ($count) {
-        $select = "SELECT COUNT(DISTINCT L.licenseID) count";
-      } else {
-        $select = "SELECT distinct DT.shortName as Type, D.effectiveDate, L.licenseID, L.shortName licenseName, O.shortName providerName, S.shortName status";
-      }
+			if ($count) {
+        		$select = "SELECT COUNT(DISTINCT L.licenseID) count";
+			} else {
+        		$select = "SELECT distinct DT.shortName as Type, D.effectiveDate, L.licenseID, L.shortName licenseName, O.shortName providerName, S.shortName status";
+      		}
 			//now formulate query
-			$query = $select . "
-									FROM Organization O, License L
-									LEFT JOIN `license_consortium` lc ON (lc.`licenseID` = L.`licenseID`)
-									LEFT JOIN Status S ON (S.statusID = L.statusID)
-									LEFT JOIN Document D ON (D.licenseID = L.licenseID)
-									LEFT JOIN DocumentType DT ON (DT.documentTypeID = L.TypeID)									
-									LEFT JOIN Expression E ON (D.documentID = E.documentID)
-									WHERE O.organizationID = L.organizationID and D.expirationDate is null
-									" . $whereStatement;
+			$query = $select . " FROM Organization O, License L
+								LEFT JOIN `license_consortium` lc ON (lc.`licenseID` = L.`licenseID`)
+								LEFT JOIN `consortium` c ON (c.`consortiumID` = lc.`consortiumID`)
+								LEFT JOIN Status S ON (S.statusID = L.statusID)
+								LEFT JOIN Document D ON (D.licenseID = L.licenseID)
+								LEFT JOIN DocumentType DT ON (DT.documentTypeID = L.TypeID)									
+								LEFT JOIN Expression E ON (D.documentID = E.documentID)
+								WHERE O.organizationID = L.organizationID and D.expirationDate is null
+								" . $whereStatement;
 
 		}
 		
 		if ($orderBy) {
-		  $query .= "\nORDER BY " . $orderBy;
+			$query .= "\nORDER BY " . $orderBy;
 		}
 		
 		if ($limit) {
-  	  $query .= "\nLIMIT " . $limit;
+			$query .= "\nLIMIT " . $limit;
 		}
-		
 		return $query;
   }
 
@@ -655,12 +654,6 @@ class License extends DatabaseObject {
 			}
 			$sql = rtrim($sql,',');
 			$this->db->processQuery($sql);
-/*
-			if ($this->db->processQuery($sql)) {
-				$this->addAttribute("consortiumIDs");
-				$this->attributes["consortiumIDs"] = $consortiumids;
-			}
-*/
 		}
 	}
 
@@ -772,7 +765,7 @@ class License extends DatabaseObject {
 			}
 		//otherwise if the org module is not installed get the consortium name from this database
 		}else{
-			$consortium = new Consortium(new NamedArguments(array('primaryKey' => $this->consortiumID)));
+			$consortium = new Consortium(new NamedArguments(array('primaryKey' => $consortiumid)));
 			return $consortium->shortName;
 		}
 	}

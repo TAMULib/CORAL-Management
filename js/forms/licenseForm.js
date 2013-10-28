@@ -211,7 +211,7 @@ function addConsortium(){
 	 type:       "GET",
 	 url:        "ajax_processing.php",
 	 cache:      false,
-	 data:       "action=addConsortium&shortName=" + $("#newConsortium").val(),
+	 data:       "action=addConsortium&shortName=" + $("#newConsortium").val()+"&editLicenseID="+$("#editLicenseID").val(),
 	 success:    function(html) { $('#span_consortium').html(html); $('#span_newConsortium').html("<font color='red'>Category has been added</font>"); }
  });
 }

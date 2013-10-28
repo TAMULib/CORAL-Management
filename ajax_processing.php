@@ -616,14 +616,18 @@ switch ($_GET['action']) {
 			}
 		}
 
-		echo "<select name='licenseConsortiumID' id='licenseConsortiumID'>";
+		echo "<select multiple='multiple' name='licenseConsortiumID' id='licenseConsortiumID'>";
 		echo "<option value=''></option>";
-
-		$license = new License();
+		if ($_GET['editLicenseID']) {
+			$license = new License(new NamedArguments(array('primaryKey' => $_GET['editLicenseID'])));
+			$licenseconsortiumids = $license->getConsortiumsByLicense();
+		} else {
+			$license = new License();
+		}
 		$display = array();
-
 		foreach($license->getConsortiumList() as $display) {
-			if ($_GET['shortName'] == $display['name']){
+			if ((is_array($licenseconsortiumids) && in_array($display['consortiumID'],$licenseconsortiumids)) || $_GET['shortName'] == $display['name']) {
+//			if ($_GET['shortName'] == $display['name']){
 				echo "<option value='" . $display['consortiumID'] . "' selected>" . $display['name'] . "</option>";
 			}else{
 				echo "<option value='" . $display['consortiumID'] . "'>" . $display['name'] . "</option>";
