@@ -28,7 +28,6 @@ class License extends DatabaseObject {
 		if ($this->primaryKey) {
 			$query = "SELECT * FROM `$this->tableName` WHERE `$this->primaryKeyName` = '$this->primaryKey'";
 			$result = $this->db->processQuery($query, 'assoc');
-//			$result['consortiumIDs'] = $this->getConsortiumsByLicense($this->primaryKey);
 			foreach (array_keys($result) as $attributeName) {
 				$this->addAttribute($attributeName);
 				$this->attributes[$attributeName] = $result[$attributeName];

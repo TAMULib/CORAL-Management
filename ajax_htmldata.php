@@ -468,9 +468,8 @@ switch ($_GET['action']) {
 			} else {
 				echo "<br />";
 			}
-			//if consortium is a search criteria, borrow the consortium name from the search results since it's already in there
 			if ($consortiumID) {
-				echo "<div><b>Category</b>: {$licenseArray[0]['consortiumName']}</div><br />";
+				echo "<div><b>Category</b>: {$licenseObj->getConsortiumName($consortiumID)}</div><br />";
 			}
 			?>
 			<table class='dataTable' style='width:727px'>

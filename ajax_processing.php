@@ -730,7 +730,7 @@ switch ($_GET['action']) {
 			if ($_POST['shortName'] == $display['shortName']){
 				echo "<option value='" . $display['documentTypeID'] . "' selected>" . $display['shortName'] . "</option>";
 			}else{
-				echo "<option value='" . $display['documentTypeID'] . "'>x" . $display['shortName'] . "</option>";
+				echo "<option value='" . $display['documentTypeID'] . "'>" . $display['shortName'] . "</option>";
 			}
 		}
 

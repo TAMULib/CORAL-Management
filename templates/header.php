@@ -52,7 +52,7 @@ $coralURL = $util->getCORALURL();
 <link rel="stylesheet" href="css/datePicker.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="css/jquery.autocomplete.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="css/jquery.tooltip.css" type="text/css" media="screen" />
-<link rel="SHORTCUT ICON" href="images/starfishfavicon.ico" />
+<link rel="SHORTCUT ICON" href="images/favicon.png" />
 <script type="text/javascript" src="js/plugins/jquery.js"></script>
 <script type="text/javascript" src="js/plugins/ajaxupload.3.5.js"></script>
 <script type="text/javascript" src="js/plugins/thickbox.js"></script>
@@ -107,8 +107,7 @@ if ($user->isAdmin()){
 
 } elseif ($user->canEdit()) {
 	$mainnav = array(array("name"=>"home","path"=>"index.php"),
-					 array("name"=>"new document","path"=>"ajax_forms.php?action=getLicenseForm&height=265&width=260&modal=true&newLicenseID=","thickbox"=>true,"cssid"=>"newLicense"),
-					 array("name"=>"compare","path"=>"compare.php"));
+					 array("name"=>"new document","path"=>"ajax_forms.php?action=getLicenseForm&height=265&width=260&modal=true&newLicenseID=","thickbox"=>true,"cssid"=>"newLicense"));
 } else {
 	$mainnav = array(array("name"=>"home","path"=>"index.php"),
 					 array("name"=>"in progress","path"=>"in_progress.php"));

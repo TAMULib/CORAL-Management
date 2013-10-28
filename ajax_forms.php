@@ -64,7 +64,7 @@ switch ($_GET['action']) {
 						<td colspan='2'>
 							<label for="shortName" class="formText">Name:</label>
 							<span id='span_error_licenseShortName' class='errorText'></span><br />
-							<input type='textbox' id = 'licenseShortName' value=<?php echo $license->shortName; ?>>
+							<input type='textbox' id = 'licenseShortName' value="<?php echo $license->shortName; ?>">
 						</td>
 					</tr>
 					<tr>
