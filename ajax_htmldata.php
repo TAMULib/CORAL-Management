@@ -182,16 +182,22 @@ switch ($_GET['action']) {
 		$licenseID = $_GET['licenseID'];
 		$license = new License(new NamedArguments(array('primaryKey' => $licenseID)));
 		$notes = $license->getNotes();
-
 		if (count($notes) > 0){
 			$documentNoteTypes = new DocumentNoteType(new NamedArguments(array('primaryKeyName'=>'documentNoteTypeID')));
+			$notetypes = $documentNoteTypes->allAsIndexedArray();
+			$documents = $license->getAllDocumentNamesAsIndexedArray();
 		?>
-
+		<h3>Notes</h3>
+<?php
+		if ($user->canEdit()){
+			echo "<a href='ajax_forms.php?action=getNoteForm&licenseID=" . $licenseID . "&height=380&width=305&modal=true' class='thickbox' id='note'>add new note</a><br /><br />";
+		}
+?>
 		<table class='verticalFormTable'>
 		<tr>
 		<th style='width:80px;'>Date</th>
-		<th style='width:80px;'>Title</th>
 		<th style='width:540px;'>Details</th>
+		<th style='width:540px;'>Document</th>
 		<th style='width:150px;'>Type</th>
 		<?php if ($user->canEdit()){ ?>
 			<th style='width:100px;'>&nbsp;</th>
@@ -211,7 +217,6 @@ switch ($_GET['action']) {
 
 				echo "<tr>";
 				echo "<td>" . $createDate . "</td>";
-				echo "<td>{$note->title}</td>";
 				echo "<td><div id='note_short_" . $note->noteID . "'>" . substr($noteText, 0,200);
 
 				if (strlen($noteText) > 200){
@@ -223,7 +228,8 @@ switch ($_GET['action']) {
 					echo "&nbsp;&nbsp;<a href='javascript:hideFullNoteText(\"" . $note->noteID . "\");'>less...</a>";
 				echo "</div>";
 				echo "</td>
-					  <td>{$documentNoteType[$note->typeID]['shortName']}</td>";
+					  <td>{$documents[$note->documentID]['shortName']}</td>
+					  <td>{$notetypes[$note->documentNoteTypeID]['shortName']}</td>";
 
 
 				if ($user->canEdit()){
@@ -240,11 +246,6 @@ switch ($_GET['action']) {
 		}else{
 			echo "(none found)";
 		}
-
-		if ($user->canEdit()){
-			echo "<br /><br /><a href='ajax_forms.php?action=getNoteForm&licenseID=" . $licenseID . "&height=380&width=305&modal=true' class='thickbox' id='note'>add new note</a>";
-		}
-
 	break;
 
 	//attachments display for attachments tab on license.php
@@ -1136,13 +1137,12 @@ switch ($_GET['action']) {
 			$duglicense = new License(new NamedArguments(array('primaryKey' => $licenseID)));
 			$dugArray = $duglicense->getDocuments();
 			$numDug = count($dugArray);				
-			
 			if ( $numDug == 0 ) {
 				echo "<a href='ajax_forms.php?action=getUploadDocument&licenseID=" . $licenseID . "&height=310&width=310&modal=true' class='thickbox' id='uploadDocument'>upload new document</a>";
 			} else {
 				echo "Only one active document is allowed. <a href='ajax_forms.php?action=getUploadDocument&licenseID=" . $licenseID . "&isArchived=1&height=310&width=310&modal=true' class='thickbox' id='uploadDocument'>upload archived document</a>";
 			}
-
+			echo '<br /><br />';
 		}
 
 

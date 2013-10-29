@@ -87,6 +87,27 @@ class License extends DatabaseObject {
 		return $objects;
 	}
 
+	public function getAllDocumentNamesAsIndexedArray() {
+
+		$query = "SELECT D.`documentID`,D.`shortName`
+						FROM Document D
+						WHERE licenseID = '" . $this->licenseID . "'
+						ORDER BY D.shortName;";
+
+		$result = $this->db->processQuery($query, 'assoc');
+
+		$objects = array();
+		//need to do this since it could be that there's only one request and this is how the dbservice returns result
+		if (isset($result['documentID'])){
+			return array($result['documentID']=>$result);
+		}else{
+			$temp = array();
+			foreach ($result as $row) {
+				$temp[$row['documentID']] = $row;
+			}
+			return $temp;
+		}
+	}
 
 	//returns array of Document objects (parent documents) - used for document display on license record
 	public function getDocumentsWithoutParents($orderBy){

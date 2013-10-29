@@ -22,43 +22,7 @@ class documentNote extends DatabaseObject {
 	protected function defineRelationships() {}
 
 	protected function overridePrimaryKeyName() {}
-/*
-	public function getTypes() {
-		$sql = "SELECT * FROM `document_notes_types` ORDER BY `name`";
-		if ($result = $this->db->processQuery($sql,'assoc')) {
-			// SizeOf fails with only 1 record. 
-			if (is_array($result)) {
-				$temp = array();
-					foreach ($result as $row) {
-						$temp[$row['typeID']] = $row['name'];	
-					}	
-				return $temp;
-			} else {
-				return array($result['typeID']=>$result['name']);				
-			}
-		}
-		return false;
-	}
 
-	public function typesAsArray() {
-		$query = "SELECT * FROM `document_notes_types` ORDER BY `name`";
-		$result = $this->db->processQuery($query, 'assoc');
-		//the front end makes assumptions about the DB schema
-		$map = array("name"=>"shortName","typeID"=>"noteID");
-		if (is_array($result)) {
-			$mappedresult = array();
-			$x = 0;
-			foreach ($result as $row) {
-				foreach ($row as $field=>$val) {
-					$mappedresult[$x][$map[$field]] = $val;
-				}
-				$x++;
-			}
-			return $mappedresult;
-		}
-		return false;
-	}
-*/
 }
 
 ?>

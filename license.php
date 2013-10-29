@@ -62,7 +62,6 @@ if ($license->shortName){
 				<!-- <div class='sidemenuunselected'><a href='javascript:void(0)' class='showExpressions'>Expressions</a></div> -->
 				<?php if ($displaySFX == "1"){ ?><div class='sidemenuunselected'><a href='javascript:void(0)' class='showSFXProviders'>Terms Tool</a></div><?php } ?>
 				<div class='sidemenuunselected'><a href='javascript:void(0)' class='showAttachments'>Attachments</a><br />&nbsp;<span class='span_AttachmentNumber'></span></div>
-				<div class='sidemenuunselected'><a href='javascript:void(0)' class='showNotes'>Notes</a><br />&nbsp;<span class='span_NoteNumber'></span></div>
 			</td>
 			<td class='mainContent'>
 
@@ -71,6 +70,8 @@ if ($license->shortName){
 				</div>
 				<br />
 				<div id='div_archives'>
+				</div>
+				<div id='div_notes'>
 				</div>
 			</td>
 		</tr>
@@ -133,25 +134,6 @@ if ($license->shortName){
 			<td class='mainContent'>
 
 				<div id='div_attachments'>
-				<img src = "images/circle.gif">Loading...
-				</div>
-			</td>
-		</tr>
-	</table>
-</div>
-
-<div id ='div_displayNotes' style='display:none;width:899px;'>
-	<table cellpadding="0" cellspacing="0" style="width: 100%; table-layout: fixed;">
-		<tr>
-			<td class="sidemenu">
-				<div class="sidemenuunselected"><a href='javascript:void(0)' class='showDocuments'>Documents</a></div>
-				<?php if ($displaySFX == "1"){ ?><div class='sidemenuunselected'><a href='javascript:void(0)' class='showSFXProviders'>Terms Tool</a></div><?php } ?>
-				<div class='sidemenuunselected'><a href='javascript:void(0)' class='showAttachments'>Attachments</a><br />&nbsp;<span class='span_AttachmentNumber'></span></div>
-				<div class='sidemenuselected' style='position: relative; width: 91px'><a href='javascript:void(0)' class='showNotes'>Notes</a><br />&nbsp;<span class='span_NoteNumber'></span></div>
-			</td>
-			<td class='mainContent'>
-
-				<div id='div_notes'>
 				<img src = "images/circle.gif">Loading...
 				</div>
 			</td>

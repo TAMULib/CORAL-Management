@@ -23,7 +23,17 @@ class DocumentNoteType extends DatabaseObject {
 
 	protected function overridePrimaryKeyName() {}
 
-
+	public function allAsIndexedArray() {
+		$types = parent::allAsArray();
+		if ($types) {
+			$temp = array();
+			foreach ($types as $type) {
+				$temp[$type['documentNoteTypeID']] = $type;
+			}
+			return $temp;
+		}
+		return false;	
+	}
 }
 
 ?>

@@ -216,19 +216,14 @@ switch ($_GET['action']) {
 						</tr>
 						<tr>
 							<td colspan='2'>
-								<label for="notetitle" class="formText">Title:</label><br /><input type='text' name='notetitle' id = 'notetitle' />
+								<label for="note[body]" class="formText">Body:</label><br /><textarea name='note[body]' id = 'noteBody' cols='44' rows='10'></textarea>
 							</td>
 						</tr>
 						<tr>
 							<td colspan='2'>
-								<label for="notebody" class="formText">Body:</label><br /><textarea name='notebody' id = 'notebody' cols='44' rows='10'></textarea>
-							</td>
-						</tr>
-						<tr>
-							<td colspan='2'>
+								<label for="note[documentNoteTypeID]" class="formText">Type:</label><br />
 <?php
-				echo '			<select id="documentNoteTypeID" name="documentNoteTypeID">
-									<option value="0">Select a type</option>';
+				echo '			<select id="noteDocumentNoteTypeID" name="note[documentNoteTypeID]">';
 				foreach($documentNoteType->allAsArray() as $display) {
 					echo "			<option value='" . $display['documentNoteTypeID'] . "'>" . $display['shortName'] . "</option>";
 				}
@@ -999,7 +994,8 @@ if ($_GET['isArchived'] == 1) {
 
 		$note = new DocumentNote(new NamedArguments(array('primaryKey' => $documentNoteID)));
 		$documentNoteType = new DocumentNoteType(new NamedArguments(array('primaryKeyName'=>'documentNoteTypeID')));
-
+		$license = new License(new NamedArguments(array('primaryKey'=>$_GET['licenseID'])));
+		$documents = $license->getAllDocumentNamesAsIndexedArray();
 		?>
 		<div id='div_noteForm'>
 		<form id='noteForm'>
@@ -1010,21 +1006,35 @@ if ($_GET['isArchived'] == 1) {
 				<td colspan='2'><span class='headerText'>Notes</span><br /><span id='span_errors'></span><br /></td>
 			</tr>
 			<tr>
-				<td colspan='2'><label for="notetitle" class="formTitle">Title:</label><br /><input type='text' name='notetitle' id = 'notetitle' value='<?php echo $note->title;?>' /></td>
-			</tr>
-			<tr>
 				<td colspan='2'><label for="notebody" class="formText">Body:</label><br /><textarea name='notebody' id = 'notebody' cols='44' rows='10'><?php echo $note->body; ?></textarea></td>
 			</tr>
 			<tr>
 				<td colspan='2'>
+					<label for="documentNoteTypeID" class="formText">Type:</label><br />
 <?php
-		echo '		<select id="documentNoteTypeID" name="documentNoteTypeID">
-						<option value="0">Select a type</option>';
+		echo '		<select id="documentNoteTypeID" name="documentNoteTypeID">';
 		foreach($documentNoteType->allAsArray() as $display) {
 			if ($note->documentNoteTypeID == $display['documentNoteTypeID']){
 				echo "	<option value='" . $display['documentNoteTypeID'] . "' selected>" . $display['shortName'] . "</option>";
 			}else{
 				echo "	<option value='" . $display['documentNoteTypeID'] . "'>" . $display['shortName'] . "</option>";
+			}
+		}
+		echo '		</select>';
+?>
+				</td>
+			</tr>
+			<tr>
+				<td colspan='2'>
+					<label for="documentID" class="formText">Document:</label><br />
+<?php
+		echo '		<select id="documentID" name="documentID">
+						<option value="0">All Documents</option>';
+		foreach($documents as $display) {
+			if ($note->documentID == $display['documentID']){
+				echo "	<option value='" . $display['documentID'] . "' selected>" . $display['shortName'] . "</option>";
+			}else{
+				echo "	<option value='" . $display['documentID'] . "'>" . $display['shortName'] . "</option>";
 			}
 		}
 		echo '		</select>';

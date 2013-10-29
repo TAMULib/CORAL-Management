@@ -479,14 +479,12 @@ switch ($_GET['action']) {
 				$license->createLoginID = $user->primaryKey;
 				$license->statusID='';
 				$license->statusDate = date( 'Y-m-d H:i:s' );
-//				$response = "License Added Successfully.<br />Please continue to upload documents and add expressions or emails.";
 				$response = "Document Added Successfully.";
 
 			}
 
 			$license->shortName			= $_POST['shortName'];
 			$license->description			= $_POST['description'];
-//			$license->consortiumID		= $_POST['consortiumID'];
 			$license->typeID		= $_POST['documentTypeID'];
 			$license->statusDate = date( 'Y-m-d H:i:s' );
 			$license->statusLoginID = $user->primaryKey;
@@ -513,9 +511,7 @@ switch ($_GET['action']) {
 
 					$document = new Document();
 					$document->documentID = '';
-//					$document->expirationDate = '';
 					$document->effectiveDate = date( 'Y-m-d H:i:s' );
-//					$document->revisionDate = ($_POST['revisionDate']) ? $_POST['revisionDate']:NULL;
 					if ((isset($_POST['revisionDate'])) && ($_POST['revisionDate'] != '')) {
 						$document->revisionDate = date("Y-m-d", strtotime($_POST['revisionDate']));
 					}
@@ -540,18 +536,15 @@ switch ($_GET['action']) {
 						echo $e;						
 					}
 
-					if ($_POST['notetitle'] && $_POST['notebody'] ) {
+					if ($_POST['note']['body']) {
 			 			$note = new DocumentNote(new NamedArguments(array('primaryKeyName'=>'documentNoteID')));
 			 			$note->documentNoteID = '';
 						$note->createDate 	=  date( 'Y-m-d H:i:s' );
 						$note->licenseID = $licenseID;
 						//avoid null values for notetypeid
-						$note->documentNoteTypeID = ($_POST['documentNoteTypeID']) ? $_POST['documentNoteTypeID']:0;
-
-						foreach (array('notetitle'=>'title','notebody'=>'body') as $name=>$dbfield) {
-			 				$note->$dbfield = $_POST[$name];
-						}
-
+						$note->documentNoteTypeID = ($_POST['note']['documentNoteTypeID']) ? $_POST['note']['documentNoteTypeID']:0;
+						$note->documentID = $document->primaryKey;
+						$note->body = $_POST['note']['body'];
 						try {
 							$note->save();
 						} catch (Exception $e) {
@@ -1150,10 +1143,10 @@ switch ($_GET['action']) {
 			$note->createDate 	=  date( 'Y-m-d H:i:s' );
 		}
 
-		$note->title = $_POST['title'];
 		$note->body	= $_POST['body'];
 		$note->licenseID 	= $_POST['licenseID'];
 		$note->documentNoteTypeID 	= $_POST['documentNoteTypeID'];
+		$note->documentID 	= $_POST['documentID'];
 
 
 		try {

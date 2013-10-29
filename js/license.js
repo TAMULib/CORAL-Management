@@ -25,14 +25,12 @@ $(document).ready(function(){
 	updateSFXProviders();
 	updateAttachmentsNumber();
    	updateAttachments();
-   	updateNotes();
 
 
 	$('#div_displayDocuments').show();
 	$('#div_displayExpressions').hide();
 	$('#div_displaySFXProviders').hide();
 	$('#div_displayAttachments').hide();
-	$('#div_displayNotes').hide();
 
 });
 
@@ -55,7 +53,6 @@ $(document).ready(function(){
 		$('#div_displayExpressions').hide();
 		$('#div_displaySFXProviders').hide();
 		$('#div_displayAttachments').hide();
-		$('#div_displayNotes').hide();
 	}
 	return false;
  });
@@ -70,7 +67,6 @@ $(document).ready(function(){
  		$('#div_displayExpressions').show();
  		$('#div_displaySFXProviders').hide();
  		$('#div_displayAttachments').hide();
-		$('#div_displayNotes').hide();
  	}
  	
  	return false;
@@ -84,7 +80,6 @@ $(document).ready(function(){
  		$('#div_displayExpressions').hide();
  		$('#div_displaySFXProviders').show();
  		$('#div_displayAttachments').hide();
-		$('#div_displayNotes').hide();
  	}
  	return false;
  });
@@ -97,7 +92,6 @@ $(document).ready(function(){
 		$('#div_displayExpressions').hide();
 		$('#div_displaySFXProviders').hide();
 		$('#div_displayAttachments').show();
-		$('#div_displayNotes').hide();
 	}
 	return false;
  });
@@ -108,7 +102,6 @@ $(document).ready(function(){
 		$('#div_displayExpressions').hide();
 		$('#div_displaySFXProviders').hide();
 		$('#div_displayAttachments').hide();
-		$('#div_displayNotes').show();
 	}
 	return false;
  });
@@ -189,10 +182,8 @@ $(document).ready(function(){
           success:    function(html) { $('#div_archives').html(html);
           	tb_reinit();
           }
-
-
       });
-
+	  updateNotes();
  }
 
 
@@ -275,7 +266,6 @@ $(document).ready(function(){
           cache:      false,
           data:       "action=getAllNotes&licenseID=" + $("#licenseID").val(),
           success:    function(html) { $('#div_notes').html(html);
-          	updateNotesNumber();
           	tb_reinit();
           }
 
@@ -296,22 +286,6 @@ function updateAttachmentsNumber(){
 			$(".span_AttachmentNumber").html("(" + remaining + " record)");
 		}else{
 			$(".span_AttachmentNumber").html("(" + remaining + " records)");
-		}
-	 }
- });
-}
-
-function updateNotesNumber(){
-  $.ajax({
-	 type:       "GET",
-	 url:        "ajax_htmldata.php",
-	 cache:      false,
-	 data:       "action=getNotesNumber&licenseID=" + $("#licenseID").val(),
-	 success:    function(remaining) {
-	 	if (remaining == "1"){
-			$(".span_NoteNumber").html("(" + remaining + " record)");
-		}else{
-			$(".span_NoteNumber").html("(" + remaining + " records)");
 		}
 	 }
  });
