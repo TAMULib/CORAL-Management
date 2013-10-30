@@ -153,6 +153,12 @@ if ((file_exists($util->getCORALPath() . "index.php")) || ($config->settings->or
 				<li><a href="<?php echo $coralURL; ?>" target='_blank'><img src='images/change/coral-main.gif'></a></li>
 				<?php
 				}
+	foreach (array("resources","licensing","organizations","usage") as $module) {
+ 		if (file_exists("{$util->getCORALPath()}{$module}/index.php")) {
+			echo "	<li><a href=\"{$coralURL}{$module}/\" target=\"_blank\"><img src=\"images/change/coral-{$module}.gif\"></a></li>";
+		}
+	}
+/*
 				if ($config->settings->organizationsModule == 'Y') {
 				?>
 				<li><a href="<?php echo $coralURL; ?>organizations/" target='_blank'><img src='images/change/coral-organizations.gif'></a></li>
@@ -171,7 +177,9 @@ if ((file_exists($util->getCORALPath() . "index.php")) || ($config->settings->or
 				if ($config->settings->usageModule == 'Y') {
 				?>
 				<li><a href="<?php echo $coralURL; ?>usage/" target='_blank'><img src='images/change/coral-usage.gif'></a></li>
-				<?php } ?>
+				<?php } 
+*/
+?>
 			</ul>
 		</li>
 		</ul>
