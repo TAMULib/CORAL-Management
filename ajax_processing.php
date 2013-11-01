@@ -730,6 +730,29 @@ switch ($_GET['action']) {
 
  		break;
 
+     case 'addNoteType':
+		$noteType = new DocumentNoteType();
+		if ((isset($_REQUEST['shortName'])) && ($_REQUEST['shortName'] != '')){
+			$noteType->documentNoteTypeID='';
+			$noteType->shortName = $_REQUEST['shortName'];
+
+			try {
+				$noteType->save();
+			} catch (Exception $e) {
+				echo $e->getMessage();
+			}
+		} 
+/*
+<select name="note[documentNoteTypeID]" id="noteDocumentNoteTypeID">
+			<option value="1">Test Type 1</option>
+			<option value="2">Test Type 2</option>			<option value="3">Test Type 3</option>			<option value="4">Test Type 4</option>			</select>
+*/		
+			echo '			<select id="noteDocumentNoteTypeID" name="note[documentNoteTypeID]">';
+			foreach($noteType->allAsArray() as $display) {
+				echo "			<option value='" . $display['documentNoteTypeID'] . "'>" . $display['shortName'] . "</option>";
+			}
+			echo '			</select>';
+ 		break;
 
 
 	 //new signature type being added directly on signature form - returns updated drop down list

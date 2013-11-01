@@ -69,7 +69,8 @@ switch ($_GET['action']) {
 				echo "<br />" . $license->getConsortiumName();
 			}
 		}else{
-			echo $license->getOrganizationName();
+			echo "<div>{$license->getOrganizationName()}</div>";
+			echo 'Categories:<br />';
 			if ($licenseconsortiumids = $license->getConsortiumsByLicense()) {
 				echo '<ul>';
 				foreach ($licenseconsortiumids as $cid) {

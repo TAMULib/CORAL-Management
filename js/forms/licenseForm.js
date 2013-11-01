@@ -242,6 +242,28 @@ function addDocumentType(){
  });
 }
 
+function newNoteType(){
+  $('#span_newNoteType').html("<input type='text' name='newNoteType' id='newNoteType' class='licenseAddInput' />  <a href='javascript:addNoteType();'>add</a>");
+
+	 //attach enter key event to new input and call add data when hit
+	 $('#span_newNoteType').keyup(function(e) {
+
+			 if(e.keyCode == 13) {
+				   addDocumentType();
+			 }
+	 });
+}
+
+function addNoteType(){
+  $.ajax({
+	 type:       "GET",
+	 url:        "ajax_processing.php",
+	 cache:      false,
+	 data:       "action=addNoteType&shortName=" + $("#newNoteType").val(),
+	 success:    function(html) { $('#span_noteType').html(html); $('#span_newNoteType').html("<font color='red'>Note Type has been added</font>"); }
+ });
+}
+
 
 //validates fields
 function validateForm (){

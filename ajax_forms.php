@@ -222,14 +222,19 @@ switch ($_GET['action']) {
 						<tr>
 							<td colspan='2'>
 								<label for="note[documentNoteTypeID]" class="formText">Type:</label><br />
+								<span id='span_noteType'>
 <?php
-				echo '			<select id="noteDocumentNoteTypeID" name="note[documentNoteTypeID]">';
+				echo '				<select id="noteDocumentNoteTypeID" name="note[documentNoteTypeID]">';
 				foreach($documentNoteType->allAsArray() as $display) {
-					echo "			<option value='" . $display['documentNoteTypeID'] . "'>" . $display['shortName'] . "</option>";
+					echo "				<option value='" . $display['documentNoteTypeID'] . "'>" . $display['shortName'] . "</option>";
 				}
 
-				echo '			</select>';
+				echo '				</select>';
 ?>
+								</span>
+								<br />
+								<span id='span_newNoteType'><a href="javascript:newNoteType();">add note type</a></span>
+								<br />
 							</td>
 						</tr>
 					</table>
@@ -1011,17 +1016,24 @@ if ($_GET['isArchived'] == 1) {
 			<tr>
 				<td colspan='2'>
 					<label for="documentNoteTypeID" class="formText">Type:</label><br />
+					<span id='span_noteType'>
+
 <?php
-		echo '		<select id="documentNoteTypeID" name="documentNoteTypeID">';
+		echo '			<select id="documentNoteTypeID" name="documentNoteTypeID">';
 		foreach($documentNoteType->allAsArray() as $display) {
 			if ($note->documentNoteTypeID == $display['documentNoteTypeID']){
-				echo "	<option value='" . $display['documentNoteTypeID'] . "' selected>" . $display['shortName'] . "</option>";
+				echo "		<option value='" . $display['documentNoteTypeID'] . "' selected>" . $display['shortName'] . "</option>";
 			}else{
-				echo "	<option value='" . $display['documentNoteTypeID'] . "'>" . $display['shortName'] . "</option>";
+				echo "		<option value='" . $display['documentNoteTypeID'] . "'>" . $display['shortName'] . "</option>";
 			}
 		}
-		echo '		</select>';
+		echo '			</select>';
 ?>
+					</span>
+					<br />
+					<span id='span_newNoteType'><a href="javascript:newNoteType();">add note type</a></span>
+					<br />
+
 				</td>
 			</tr>
 			<tr>
