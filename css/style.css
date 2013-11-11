@@ -66,7 +66,7 @@ input, select, multiple, textarea{color: #3D545D; font-family: "arial"; font-siz
 
 table.titleTable {width:900px;background-image:url('../images/licensingtitle.gif');background-repeat:no-repeat;height:87px;}
 table.headerTable {width:900px;min-height:40px;background-image:url('../images/header.gif');background-repeat:no-repeat;text-align:left}
-table.headerTable td {
+#div_licenseHead table.headerTable td {
 	padding: 12px;
 }
 
