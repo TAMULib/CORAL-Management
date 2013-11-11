@@ -201,48 +201,51 @@ switch ($_GET['action']) {
 						<td><label for="archiveInd" class="formText">Archived:</label></td>
 						<td><input type='checkbox' id='archiveInd' name='archiveInd' value='1' /></td>
 					</tr>
-				</table>
 <?php
 		//only show the new note option if we're creating a new document
 		if (!$licenseID) {
 ?>
-				<a href="#addNote" class="sectiontoggle">Add Optional Note</a>
-				<div id="addNote" class="hidden">
-					<table style="width:300px;">
-						<tr>
-							<td colspan='2'>
-								<span id='span_errors'></span><br />
-							</td>
-						</tr>
-						<tr>
-							<td colspan='2'>
-								<label for="note[body]" class="formText">Body:</label><br /><textarea name='note[body]' id = 'noteBody' cols='44' rows='10'></textarea>
-							</td>
-						</tr>
-						<tr>
-							<td colspan='2'>
-								<label for="note[documentNoteTypeID]" class="formText">Type:</label><br />
-								<span id='span_noteType'>
+					<tr>
+						<td colspan="2">
+							<a href="#addNote" class="sectiontoggle">Add Optional Note</a>
+							<div id="addNote" class="hidden">
+								<table style="width:300px;">
+									<tr>
+										<td colspan='2'>
+											<span id='span_errors'></span><br />
+										</td>
+									</tr>
+									<tr>
+										<td colspan='2'>
+											<label for="note[body]" class="formText">Body:</label><br /><textarea name='note[body]' id = 'noteBody' cols='44' rows='10'></textarea>
+										</td>
+									</tr>
+									<tr>
+										<td colspan='2'>
+											<label for="note[documentNoteTypeID]" class="formText">Type:</label><br />
+											<span id='span_noteType'>
 <?php
-				echo '				<select id="noteDocumentNoteTypeID" name="note[documentNoteTypeID]">';
+				echo '						<select id="noteDocumentNoteTypeID" name="note[documentNoteTypeID]">';
 				foreach($documentNoteType->allAsArray() as $display) {
-					echo "				<option value='" . $display['documentNoteTypeID'] . "'>" . $display['shortName'] . "</option>";
+					echo "						<option value='" . $display['documentNoteTypeID'] . "'>" . $display['shortName'] . "</option>";
 				}
 
-				echo '				</select>';
+				echo '						</select>';
 ?>
-								</span>
-								<br />
-								<span id='span_newNoteType'><a href="javascript:newNoteType();">add note type</a></span>
-								<br />
-							</td>
-						</tr>
-					</table>
-
-			</div>
+											</span>
+											<br />
+											<span id='span_newNoteType'><a href="javascript:newNoteType();">add note type</a></span>
+											<br />
+										</td>
+									</tr>
+								</table>
+							</div>
+						</td>
+					</tr>
 <?php
 		}
 ?>
+				</table>
 				<table style="width:300px;">
 					<tr style="vertical-align:middle;">
 						<td style="padding-top:8px;"><input type='button' value='submit' name='submitLicense' id ='submitLicense'></td>
