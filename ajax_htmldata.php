@@ -183,17 +183,17 @@ switch ($_GET['action']) {
 		$licenseID = $_GET['licenseID'];
 		$license = new License(new NamedArguments(array('primaryKey' => $licenseID)));
 		$notes = $license->getNotes();
-		if (count($notes) > 0){
-			$documentNoteTypes = new DocumentNoteType(new NamedArguments(array('primaryKeyName'=>'documentNoteTypeID')));
-			$notetypes = $documentNoteTypes->allAsIndexedArray();
-			$documents = $license->getAllDocumentNamesAsIndexedArray();
-		?>
+?>
 		<h3>Notes</h3>
 <?php
 		if ($user->canEdit()){
 			echo "<a href='ajax_forms.php?action=getNoteForm&licenseID=" . $licenseID . "&height=380&width=305&modal=true' class='thickbox' id='note'>add new note</a><br /><br />";
 		}
-?>
+		if (is_array($notes) && count($notes) > 0){
+			$documentNoteTypes = new DocumentNoteType(new NamedArguments(array('primaryKeyName'=>'documentNoteTypeID')));
+			$notetypes = $documentNoteTypes->allAsIndexedArray();
+			$documents = $license->getAllDocumentNamesAsIndexedArray();
+		?>
 		<table class='verticalFormTable'>
 		<tr>
 		<th style='width:80px;'>Date</th>
