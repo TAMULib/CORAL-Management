@@ -96,16 +96,6 @@ $(document).ready(function(){
 	return false;
  });
 
- $(".showNotes").click(function () {
- 	if (viewAll == "0"){
-		$('#div_displayDocuments').hide();
-		$('#div_displayExpressions').hide();
-		$('#div_displaySFXProviders').hide();
-		$('#div_displayAttachments').hide();
-	}
-	return false;
- });
-
 
  function deleteLicense(licenseID){
     if (confirm("Do you really want to delete this license?") == true) {
