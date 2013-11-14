@@ -17,7 +17,7 @@
 */
 
 
-class documentNote extends DatabaseObject {
+class DocumentNote extends DatabaseObject {
 
 	protected function defineRelationships() {}
 

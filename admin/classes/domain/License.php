@@ -232,7 +232,7 @@ class License extends DatabaseObject {
 
 	public function getNotes(){
 
-		$query = "SELECT `documentNoteID` FROM `documentnote` WHERE `licenseID`={$this->primaryKey} ORDER BY `createDate` DESC";
+		$query = "SELECT `documentNoteID` FROM `DocumentNote` WHERE `licenseID`={$this->primaryKey} ORDER BY `createDate` DESC";
 
 		if ($result = $this->db->processQuery($query, 'assoc')) {
 			$objects = array();
@@ -252,7 +252,7 @@ class License extends DatabaseObject {
 
 	public function getNotesCount() {
 		if ($this->primaryKey) {
-			$sql = "SELECT COUNT(*) AS `total` FROM `documentnote` WHERE `licenseID`={$this->primaryKey}";
+			$sql = "SELECT COUNT(*) AS `total` FROM `DocumentNote` WHERE `licenseID`={$this->primaryKey}";
 			if ($result = $this->db->processQuery($sql,'assoc')) {
 				return $result['total'];
 			}
