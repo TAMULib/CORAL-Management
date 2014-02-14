@@ -57,6 +57,7 @@ switch ($_GET['action']) {
 			$util = new Utility();
 
 			echo "<div>{$license->getOrganizationName()} <a href=\"{$util->getOrganizationURL()}{$license->organizationID}\" target=\"_blank\">Edit Organization</a></div>";
+			echo "<div>Description:  " . $license->description()."</div>";
 			echo 'Categories:<br />';
 
 			if ($licenseconsortiumids = $license->getConsortiumsByLicense()) {
@@ -70,6 +71,7 @@ switch ($_GET['action']) {
 			}
 		}else{
 			echo "<div>{$license->getOrganizationName()}</div>";
+			echo "<div>Description:  " . $license->description()."</div>";
 			echo 'Categories:<br />';
 			if ($licenseconsortiumids = $license->getConsortiumsByLicense()) {
 				echo '<ul>';
@@ -82,7 +84,6 @@ switch ($_GET['action']) {
 			}
 		}
 //		echo "Category:  " . $license->getConsortiumName();
-		echo "<br />Description:  " . $license->description();
 		echo "<br />Creation Date:  " . format_date($license->createDate())." ({$license->createLoginID})";
 		echo "<br />Last Update:  " . format_date($license->statusDate())." ({$license->statusLoginID})";
 		
