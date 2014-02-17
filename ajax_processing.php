@@ -880,7 +880,6 @@ switch ($_GET['action']) {
 		//since we're using MyISAM which doesn't support FKs, must verify that there are no records of children or they could disappear
 		$instance = new $className(new NamedArguments(array('primaryKey' => $deleteID)));
 		$numberOfChildren = $instance->getNumberOfChildren();
-
 		echo "<font color='red'>";
 
 		if ($numberOfChildren > 0){

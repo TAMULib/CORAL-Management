@@ -34,6 +34,12 @@ class DocumentNoteType extends DatabaseObject {
 		}
 		return false;	
 	}
+
+	public function getNumberOfChildren(){
+		$query = "SELECT count(*) childCount FROM DocumentNote WHERE documentNoteTypeID = '" . $this->documentNoteTypeID . "';";
+		$result = $this->db->processQuery($query, 'assoc');
+		return $result['childCount'];
+	}
 }
 
 ?>

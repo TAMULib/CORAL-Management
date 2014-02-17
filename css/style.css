@@ -492,3 +492,8 @@ table.borderedFormTable tr {vertical-align: top;}
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
 }
+
+#div_notes {
+	border-top: 1px solid #E5EBEF;
+	padding-top: 5px;
+}

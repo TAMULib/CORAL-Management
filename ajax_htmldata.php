@@ -183,7 +183,7 @@ switch ($_GET['action']) {
 		$license = new License(new NamedArguments(array('primaryKey' => $licenseID)));
 		$notes = $license->getNotes();
 ?>
-		<h3>Notes</h3>
+		<h4>Notes</h4>
 <?php
 		if ($user->canEdit()){
 			echo "<a href='ajax_forms.php?action=getNoteForm&licenseID=" . $licenseID . "&height=380&width=305&modal=true' class='thickbox' id='note'>add new note</a><br /><br />";

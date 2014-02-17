@@ -99,7 +99,7 @@ $coralURL = $util->getCORALURL();
 <tr style='vertical-align:top'>
 <td style='width:870px;height:19px;'>
 <?php
-//build main navigation basee on user privileges
+//build main navigation based on user privileges
 if ($user->isAdmin()){
 	$mainnav = array(array("name"=>"home","path"=>"index.php"),
 					 array("name"=>"new document","path"=>"ajax_forms.php?action=getLicenseForm&height=530&width=400&modal=true&newLicenseID=","thickbox"=>true,"cssid"=>"newLicense"),
@@ -153,7 +153,7 @@ if ((file_exists($util->getCORALPath() . "index.php")) || ($config->settings->or
 				<li><a href="<?php echo $coralURL; ?>" target='_blank'><img src='images/change/coral-main.gif'></a></li>
 				<?php
 				}
-	foreach (array("resources","licensing","organizations","usage") as $module) {
+	foreach (array("resources","licensing","organizations") as $module) {
  		if (file_exists("{$util->getCORALPath()}{$module}/index.php")) {
 			echo "	<li><a href=\"{$coralURL}{$module}/\" target=\"_blank\"><img src=\"images/change/coral-{$module}.gif\"></a></li>";
 		}

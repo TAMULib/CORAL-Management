@@ -28,7 +28,7 @@ class Consortium extends DatabaseObject {
 	//returns number of children for this particular consortium
 	public function getNumberOfChildren(){
 
-		$query = "SELECT count(*) childCount FROM License WHERE consortiumID = '" . $this->consortiumID . "';";
+		$query = "SELECT count(*) childCount FROM license_consortium WHERE consortiumID = '" . $this->consortiumID . "';";
 
 		$result = $this->db->processQuery($query, 'assoc');
 
