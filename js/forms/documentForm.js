@@ -199,12 +199,25 @@ function newDocumentType(){
 
 
 function addDocumentType(){
-  //add documentType to db and returns updated select box
+  //check for duplicates
   $.ajax({
 	 type:       "POST",
-	 url:        "ajax_processing.php?action=addDocumentType",
+	 url:        "ajax_processing.php?action=checkForDuplicates",
 	 cache:      false,
-	 data:       { shortName: $("#newDocumentType").val() },
-	 success:    function(html) { $('#span_documentType').html(html); $('#span_newDocumentType').html("<font color='red'>DocumentType has been added</font>"); }
+	 data:       { shortName: $("#newDocumentType").val(), newType: "DocumentType" },
+	 success:    function(data) {
+					if (data == "1") {
+					  //add documentType to db and returns updated select box
+					  $.ajax({
+						 type:       "POST",
+						 url:        "ajax_processing.php?action=addDocumentType",
+						 cache:      false,
+						 data:       { shortName: $("#newDocumentType").val() },
+						 success:    function(html) { $('#span_documentType').html(html); $('#span_newDocumentType').html("<font color='red'>DocumentType has been added</font>"); }
+					  });
+					} else {
+						alert("That type is already in use.");
+					}
+				 }
  });
 }

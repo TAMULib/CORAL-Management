@@ -46,14 +46,26 @@ function newNoteType(){
 }
 
 function addNoteType(){
+  //check for duplicates
   $.ajax({
-	 type:       "GET",
-	 url:        "ajax_processing.php",
+	 type:       "POST",
+	 url:        "ajax_processing.php?action=checkForDuplicates",
 	 cache:      false,
-	 data:       "action=addNoteType&shortName=" + $("#newNoteType").val(),
-	 success:    function(html) { $('#span_noteType').html(html); $('#span_newNoteType').html("<font color='red'>Note Type has been added</font>"); }
- });
+	 data:       { shortName: $("#newNoteType").val(), newType: "DocumentNoteType" },
+	 success:    function(data) {
+					if (data == "1") {
+					  $.ajax({
+						 type:       "GET",
+						 url:        "ajax_processing.php",
+						 cache:      false,
+						 data:       "action=addNoteType&shortName=" + $("#newNoteType").val(),
+						 success:    function(html) { $('#span_noteType').html(html); $('#span_newNoteType').html("<font color='red'>Note Type has been added</font>"); }
+						});
+					} else {
+						alert("That Note Type is already in use.");
+					}
+	 			}
+ 	});
 }
-
 
 

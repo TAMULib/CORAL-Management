@@ -694,6 +694,29 @@ switch ($_GET['action']) {
 		echo "</select>";
 
  		break;
+	
+	//AJAX helper for checking New Doc Type,Category,and Note Type submissions for uniqueness
+	// echo 1 if the value of $_REQUEST['shortName'] is not in use OR we're unable to check due to input errors
+	// echo 0 if the value of $_REQUEST['shortName'] is already in use 
+	 case 'checkForDuplicates':
+		$validTypes = array('DocumentType','DocumentNoteType','Consortium');
+		if ($_REQUEST['shortName'] && ($_REQUEST['newType'] && in_array($_REQUEST['newType'],$validTypes))) {
+			$tempObject = new $_REQUEST['newType']();
+			$currentItems = $tempObject->allAsArray();
+			$inUse = false;
+			foreach ($currentItems as $item) {
+				if (strtoupper($item['shortName']) == strtoupper($_REQUEST['shortName'])) {
+					$inUse = true;
+					break;
+				}
+			}
+		}
+		$result = 0;
+		if (!$inUse) {
+			$result = 1;
+		}
+		echo $result;
+	 break;
 
 	 //new doc type being added directly on document form - returns updated drop down list
      case 'addDocumentType':

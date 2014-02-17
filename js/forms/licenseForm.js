@@ -204,16 +204,28 @@ function newConsortium(){
 	 });
 }
 
-
 function addConsortium(){
-  //add consortium to db and returns updated select box
+  //check for duplicates
   $.ajax({
-	 type:       "GET",
-	 url:        "ajax_processing.php",
+	 type:       "POST",
+	 url:        "ajax_processing.php?action=checkForDuplicates",
 	 cache:      false,
-	 data:       "action=addConsortium&shortName=" + $("#newConsortium").val()+"&editLicenseID="+$("#editLicenseID").val(),
-	 success:    function(html) { $('#span_consortium').html(html); $('#span_newConsortium').html("<font color='red'>Category has been added</font>"); }
- });
+	 data:       { shortName: $("#newConsortium").val(), newType: "Consortium" },
+	 success:    function(data) {
+					if (data == "1") {
+					  //add consortium to db and returns updated select box
+					  $.ajax({
+						 type:       "GET",
+						 url:        "ajax_processing.php",
+						 cache:      false,
+						 data:       "action=addConsortium&shortName=" + $("#newConsortium").val()+"&editLicenseID="+$("#editLicenseID").val(),
+						 success:    function(html) { $('#span_consortium').html(html); $('#span_newConsortium').html("<font color='red'>Category has been added</font>"); }
+					 });
+					} else {
+						alert("That Category is already in use.");
+					}
+	 			}
+ 	});
 }
 
 
@@ -230,15 +242,27 @@ function newDocumentType(){
 	 });
 }
 
-
 function addDocumentType(){
-  //add consortium to db and returns updated select box
+  //check for duplicates
   $.ajax({
-	 type:       "GET",
-	 url:        "ajax_processing.php",
+	 type:       "POST",
+	 url:        "ajax_processing.php?action=checkForDuplicates",
 	 cache:      false,
-	 data:       "action=addDocumentType&shortName=" + $("#newDocumentType").val(),
-	 success:    function(html) { $('#span_documentType').html(html); $('#span_newDocumentType').html("<font color='red'>Document Type has been added</font>"); }
+	 data:       { shortName: $("#newDocumentType").val(), newType: "DocumentType" },
+	 success:    function(data) {
+					if (data == "1") {
+					  //add documentType to db and returns updated select box
+					  $.ajax({
+						 type:       "POST",
+						 url:        "ajax_processing.php?action=addDocumentType",
+						 cache:      false,
+						 data:       { shortName: $("#newDocumentType").val() },
+						 success:    function(html) { $('#span_documentType').html(html); $('#span_newDocumentType').html("<font color='red'>DocumentType has been added</font>"); }
+					  });
+					} else {
+						alert("That type is already in use.");
+					}
+				 }
  });
 }
 
@@ -255,13 +279,39 @@ function newNoteType(){
 }
 
 function addNoteType(){
+  //check for duplicates
   $.ajax({
-	 type:       "GET",
-	 url:        "ajax_processing.php",
+	 type:       "POST",
+	 url:        "ajax_processing.php?action=checkForDuplicates",
 	 cache:      false,
-	 data:       "action=addNoteType&shortName=" + $("#newNoteType").val(),
-	 success:    function(html) { $('#span_noteType').html(html); $('#span_newNoteType').html("<font color='red'>Note Type has been added</font>"); }
- });
+	 data:       { shortName: $("#newNoteType").val(), newType: "DocumentNoteType" },
+	 success:    function(data) {
+					if (data == "1") {
+					  $.ajax({
+						 type:       "GET",
+						 url:        "ajax_processing.php",
+						 cache:      false,
+						 data:       "action=addNoteType&shortName=" + $("#newNoteType").val(),
+						 success:    function(html) { $('#span_noteType').html(html); $('#span_newNoteType').html("<font color='red'>Note Type has been added</font>"); }
+						});
+					} else {
+						alert("That Note Type is already in use.");
+					}
+	 			}
+ 	});
+}
+
+
+function newNoteType(){
+  $('#span_newNoteType').html("<input type='text' name='newNoteType' id='newNoteType' class='licenseAddInput' />  <a href='javascript:addNoteType();'>add</a>");
+
+	 //attach enter key event to new input and call add data when hit
+	 $('#span_newNoteType').keyup(function(e) {
+
+			 if(e.keyCode == 13) {
+				   addDocumentType();
+			 }
+	 });
 }
 
 
