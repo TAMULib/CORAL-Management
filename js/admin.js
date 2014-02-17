@@ -103,24 +103,39 @@
  function addData(tableName){
 
        if ($('#new' + tableName).val()) {
-       	       $('#span_' + tableName + "_response").html('<img src = "images/circle.gif">&nbsp;&nbsp;Processing...');
-       	       
-	       $.ajax({
-		  type:       "POST",
-		  url:        "ajax_processing.php?action=addData",
-		  cache:      false,
-		  data:       { tableName: tableName, shortName: $('#new' + tableName).val() },
-		  success:    function(html) { 
-		  $('#span_' + tableName + "_response").html(html);  
-
-		  // close the span in 3 secs
-		  setTimeout("emptyResponse('" + tableName + "');",3000); 
-		  
-		  showAdd(tableName);
-		  updateForm(tableName); 
-		  
-		  }
-	      });
+       		$('#span_' + tableName + "_response").html('<img src = "images/circle.gif">&nbsp;&nbsp;Processing...');
+			  $.ajax({
+				 type:       "POST",
+				 url:        "ajax_processing.php?action=checkForDuplicates",
+				 cache:      false,
+				 data:       { shortName: $('#new' + tableName).val(), newType: tableName },
+				 success:    function(data) {
+								if (data == "1") {
+							       $.ajax({
+								  type:       "POST",
+								  url:        "ajax_processing.php?action=addData",
+								  cache:      false,
+								  data:       { tableName: tableName, shortName: $('#new' + tableName).val() },
+								  success:    function(html) { 
+								  $('#span_' + tableName + "_response").html(html);  
+						
+								  // close the span in 3 secs
+								  setTimeout("emptyResponse('" + tableName + "');",3000); 
+								  
+								  showAdd(tableName);
+								  updateForm(tableName); 
+								  
+								  }
+							      });
+								} else {
+									var displayName = tableName;
+									if (tableName == 'Consortium') {
+										displayName = 'Category';
+									}
+									$('#span_' + tableName + "_response").html("That "+displayName+" is already in use.");
+								}
+							}
+				});
 	}
 
  }
