@@ -116,8 +116,10 @@ switch ($_GET['action']) {
 						</td>
 					</tr>
 					<tr>
-						<td><label for="revisionDate" class="formText">Last Document Revision:</label></td>
-						<td><input class="date-pick" type='input' id='revisionDate' name='revisionDate' value="<?php echo date("m/d/Y");?>" /></td>
+						<td colspan="2">
+							<label for="revisionDate" class="formText">Last Document Revision:</label>
+							<div><input class="date-pick" type='input' id='revisionDate' name='revisionDate' value="<?php echo date("m/d/Y");?>" /></div>
+						</td>
 					</tr>
 <?php 
 		//if editing
@@ -130,7 +132,7 @@ switch ($_GET['action']) {
 		
 					<tr>
 						<td colspan='2'>
-							<label for="consortiumID" class="formText">Categories:</label><br />
+							<label for="consortiumID" class="formText">Categories:</label>
 							<span id='span_error_licenseConsortiumID' class='errorText'></span><br />
 							<span id='span_consortium'>
 <?php
@@ -185,12 +187,10 @@ switch ($_GET['action']) {
 		} else {
 ?>
 					<tr>
-						<td>
+						<td colspan="2">
 							<label for="uploadDocument" class="formText">File:</label>
-						</td>
-						<td>
 <?php
-			echo "			<div id='div_uploadFile'><input type='file' name='upload_button' id='upload_button'></div>";
+			echo "			<div style=\"display:inline;\" id='div_uploadFile'><input type='file' name='upload_button' id='upload_button'></div>";
 	}		
 ?>
 							<span id='div_file_message'></span>
