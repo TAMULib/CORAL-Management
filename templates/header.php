@@ -109,8 +109,7 @@ if ($user->isAdmin()){
 	$mainnav = array(array("name"=>"home","path"=>"index.php"),
 					 array("name"=>"new document","path"=>"ajax_forms.php?action=getLicenseForm&height=265&width=260&modal=true&newLicenseID=","thickbox"=>true,"cssid"=>"newLicense"));
 } else {
-	$mainnav = array(array("name"=>"home","path"=>"index.php"),
-					 array("name"=>"in progress","path"=>"in_progress.php"));
+	$mainnav = array(array("name"=>"home","path"=>"index.php"));
 }
 //display main navigation
 echo '<div class="mainnav">';
