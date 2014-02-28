@@ -906,8 +906,9 @@ switch ($_GET['action']) {
 		echo "<font color='red'>";
 
 		if ($numberOfChildren > 0){
+			$type = ($className == 'Consortium') ? 'category':strtolower(preg_replace("/[A-Z]/", " \\0" , lcfirst($className)));
 			//print out a friendly message...
-			echo "Unable to delete  - this " . strtolower(preg_replace("/[A-Z]/", " \\0" , lcfirst($className))) . " is in use.  Please make sure no documents are set up with this information.";
+			echo "Unable to delete  - this " . $type . " is in use.  Please make sure no documents are set up with this information.";
 		}else{
 			try {
 				$instance->delete();
