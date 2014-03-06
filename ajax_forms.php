@@ -1145,10 +1145,10 @@ if ($_GET['isArchived'] == 1) {
 		<tr><td><label for='privilegeID'><b>Privilege</b></label</td>
 		<td>
 				<fieldset id="fieldsetPrivilege">
-				<a title = "Add/Edit users can add, edit, or remove licenses and associated fields<br /><br />Admin users have access to the Admin page and the SFX tab.<br /><br />Restricted users do not have the ability to view documents<br /><br />View only users can view all license information, including the license pdf" href=""><img src='images/help.gif'></a>
+				<a title = "Add/Edit users can add, edit, or remove licenses and associated fields<br /><br />Admin users have access to the Admin page and the SFX tab.<br /><br />View only users can view all license information, including the license pdf" href=""><img src='images/help.gif'></a>
 				</fieldset>
 
-				<div id="footnote_priv" style='display:none;'>Add/Edit users can add, edit, or remove licenses and associated fields<br /><br />Admin users have access to the Admin page and the SFX tab.<br /><br />Restricted users do not have the ability to view documents<br /><br />View only users can view all license information, including the license pdf</div>
+				<div id="footnote_priv" style='display:none;'>Add/Edit users can add, edit, or remove licenses and associated fields<br /><br />Admin users have access to the Admin page and the SFX tab.<br /><br />View only users can view all license information, including the license pdf</div>
 
 		</td>
 		<td>
