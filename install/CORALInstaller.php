@@ -14,21 +14,6 @@ class CORALInstaller {
   public $error;
   protected $config;
   protected $updates = array(
-    "1.1" => array(
-      "privileges" => array("ALTER","CREATE","DELETE"),
-      "description" => "<p>This upgrade will connect to MySQL and run the CORAL Licensing structure changes. No changes to the configuration file are required.  Database structure changes include:</p>
-    	<ul>
-    		<li>Renaming Qualification to Qualifier</li>
-    		<li>Drop qualificationID from Expression</li>
-    		<li>Add expressionTypeID to Qualifier</li>
-    		<li>Create table ExpressionQualifierProfile</li>
-    	</ul>  <br />
-<span style='color:red'>*Please note* Due to the extent of the change with qualifiers this upgrade will by default remove any qualifier data you have entered.  If you wish to first retrieve a report of existing qualifier data <a href='http://erm.library.nd.edu/' target='_blank'>contact the CORAL team</a> for a script.  Also, the qualifier data can be retained if desired but it will need to be explicitly mapped to the new expression type/qualifier layout first.  Let the <a href='http://erm.library.nd.edu/' target='_blank'>CORAL Team</a> know if you have any questions about this process.</span>"
-    ),
-    "1.2" => array(
-      "privileges" => array("ALTER"),
-      "description" => "This optimization update will connect to MySQL and run the CORAL Licensing database changes. No changes to the configuration file are required.  This update adds a number of indexes to the tables in the Licensing module, which greatly improves performance for sites with large numbers of license records.  To see a list of the specific indexes, see the file located at install/protected/update_1.2.sql in this module."
-    )
   );
   
   public function __construct() {
@@ -137,7 +122,7 @@ class CORALInstaller {
   }
   
   public function modulePath() {
-    //returns file path for this module, i.e. /coral/licensing/
+    //returns file path for this module, i.e. /coral/Management/
     $replace_path = preg_quote(DIRECTORY_SEPARATOR."install");
     return preg_replace("@$replace_path$@", "", dirname(__FILE__));
   }
@@ -216,10 +201,6 @@ class CORALInstaller {
   public function isUpdateInstalled($version) {
     if ($this->installed()) {
       switch ($version) {
-        case "1.1":
-          return $this->tableExists("Qualifier");
-        case "1.2":
-          return $this->indexExists("Document", "licenseID");
       }
     }
     return false;

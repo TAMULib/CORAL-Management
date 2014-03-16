@@ -58,10 +58,10 @@ if ($_POST["submit"]) {
   }
 }
 
-$installer->header("CORAL Licensing Update $version");
+$installer->header("CORAL Management Update $version");
 ?>
 <?php $installer->displayMessages();	?>
-<h3>Welcome to the CORAL Licensing update for Version <?php echo $version; ?>!</h3>
+<h3>Welcome to the CORAL Management update for Version <?php echo $version; ?>!</h3>
 <?php echo $update["description"]; ?>
 
 <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
