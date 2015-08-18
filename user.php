@@ -16,6 +16,8 @@
 **************************************************************************************************************************
 */
 
+session_start();
+
 $util = new Utility();
 $config = new Configuration();
 
@@ -30,7 +32,7 @@ if ($config->settings->authModule == 'Y'){
 
 	//load user and verify they have a valid open session
 	$user = new User(new NamedArguments(array('primaryKey' => $loginID)));
-$sessionID = $util->getSessionCookie();
+	$sessionID = $util->getSessionCookie();
 
 	//if the user has an open session
 	if (($loginID) && ($user->hasOpenSession())){
@@ -63,7 +65,7 @@ $sessionID = $util->getSessionCookie();
 }else{
 
 	//get login id from server
-	if (!isset($_SESSION['loginID']) || ($_SESSION['loginID'] == '')){
+	if (!isset($_SESSION['loginID']) || ($_SESSION['loginID'] == '') || (strlen($_SESSION['loginID'] == 0))) {
 
 
 		$varName = $config->settings->remoteAuthVariableName;
@@ -79,21 +81,12 @@ $sessionID = $util->getSessionCookie();
 		//use the split in case the remote login is supplied as an email address
 		list ($loginID,$restofAddr) = explode("@", $remoteAuth);
 
-
-
 		session_start();
 		$_SESSION['loginID'] = $loginID;
-
-
-	}else{
-
+	} else {
 		$loginID = $_SESSION['loginID'];
-
 	}
-
 }
-
-
 
 //for the licensing module we require that the user exists in the database before granting access
 //thus, setuser.php is not used
@@ -102,8 +95,7 @@ if ($loginID){
 	$user = new User(new NamedArguments(array('primaryKey' => $loginID)));
 	$privilege = new Privilege(new NamedArguments(array('primaryKey' => $user->privilegeID)));
 
-	//if the user doesn't exist in database we need to redirect them to a page to give instructions on how to be added
-	if ($user->privilegeID == ""){
+	if (($user->firstName == "" && $user->lastName == "") || $user->privilegeID == "") {
 		header('Location: not_available.php');
 	}
 }
