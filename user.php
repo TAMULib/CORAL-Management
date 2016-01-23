@@ -95,7 +95,8 @@ if ($loginID){
 	$user = new User(new NamedArguments(array('primaryKey' => $loginID)));
 	$privilege = new Privilege(new NamedArguments(array('primaryKey' => $user->privilegeID)));
 
-	if (($user->firstName == "" && $user->lastName == "") || $user->privilegeID == "") {
+	//if the user doesn't exist in database we need to redirect them to a page to give instructions on how to be added
+	if ($user->privilegeID == ""){
 		header('Location: not_available.php');
 	}
 }
