@@ -29,7 +29,7 @@ if ($user->isAdmin()){
 
 ?>
 
-
+<!--
 <table class="headerTable">
 <tr><td>
 <span class="headerText">Users</span>&nbsp;&nbsp;<span id='span_User_response' class='redText'></span>
@@ -40,7 +40,7 @@ if ($user->isAdmin()){
 </div>
 </td></tr>
 </table>
-
+-->
 
 
 
