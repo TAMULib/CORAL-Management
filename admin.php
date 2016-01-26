@@ -29,20 +29,16 @@ if ($user->isAdmin()){
 
 ?>
 
-<!--
 <table class="headerTable">
 <tr><td>
 <span class="headerText">Users</span>&nbsp;&nbsp;<span id='span_User_response' class='redText'></span>
-<br /><span id='span_newUser' class='adminAddInput'><a href='ajax_forms.php?action=getAdminUserUpdateForm&height=202&width=288&modal=true' class='thickbox' id='expression'>add new user</a></span>
+<?php // Disable for Demo Site <br /><span id='span_newUser' class='adminAddInput'><a href='ajax_forms.php?action=getAdminUserUpdateForm&height=202&width=288&modal=true' class='thickbox' id='expression'>add new user</a></span> ?>
 <br /><br />
 <div id='div_User'>
 <img src = "images/circle.gif">Loading...
 </div>
 </td></tr>
 </table>
--->
-
-
 
 <br />
 <br />

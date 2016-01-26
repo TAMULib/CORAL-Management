@@ -1376,6 +1376,7 @@ switch ($_GET['action']) {
 				<th>&nbsp;</th>
 				<?php
 
+				if (1==2) { // Disable for DEMO site
 				foreach($user->allAsArray() as $instance) {
 					$privilege = new Privilege(new NamedArguments(array('primaryKey' => $instance['privilegeID'])));
 
@@ -1392,7 +1393,7 @@ switch ($_GET['action']) {
 					echo "<td style='width:50px'><a href='javascript:deleteUser(\"" . $instance['loginID'] . "\")'>remove</a></td>";
 					echo "</tr>";
 				}
-
+				}
 				?>
 			</table>
 			<?php
