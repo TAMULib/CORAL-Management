@@ -103,7 +103,7 @@
  function addData(tableName){
 
        if ($('#new' + tableName).val()) {
-       		$('#span_' + tableName + "_response").html('<img src = "images/circle.gif">&nbsp;&nbsp;Processing...');
+       		$('#span_' + tableName + "_response").html("<img src='images/circle.gif'>&nbsp;&nbsp;"+_("Processing..."));
 			  $.ajax({
 				 type:       "POST",
 				 url:        "ajax_processing.php?action=checkForDuplicates",
@@ -132,7 +132,7 @@
 									if (tableName == 'Consortium') {
 										displayName = 'Category';
 									}
-									$('#span_' + tableName + "_response").html("That "+displayName+" is already in use.");
+									$('#span_' + tableName + "_response").html(_("That ")+displayName+_(" is already in use."));
 								}
 							}
 				});
@@ -140,39 +140,57 @@
 
  }
 
- function updateData(tableName, updateID){
-	$.ajax({
-          type:       "POST",
-          url:        "ajax_processing.php?action=updateData",
-          cache:      false,
-          data:       { tableName: tableName, updateID: updateID, shortName: $('#updateVal').val() },
-          success:    function(html) { 
-          updateForm(tableName);
-          window.parent.tb_remove();
-          }
-       });
+function updateData(tableName, updateID){
+    if(validateUpdateData() === true){
+        $.ajax({
+            type:       "POST",
+            url:        "ajax_processing.php?action=updateData",
+            cache:      false,
+            data:       { tableName: tableName, updateID: updateID, shortName: $('#updateVal').val() },
+            success:    function(html) { 
+                updateForm(tableName);
+                window.parent.tb_remove();
+            }
+        });
+    }
+}
 
- }
+// Validate updateData
+function validateUpdateData(){
+    if($("#updateVal").val() == ''){
+        $("#span_errors").html('Error - Please enter a value');
+        $("#updateVal").focus();
+        return false;
+    }else{
+        return true;
+    }
+}
 
+function submitUserData(orgLoginID){
+    if(validateUserForm() === true){
+        $.ajax({
+            type:       "POST",
+            url:        "ajax_processing.php?action=submitUserData",
+            cache:      false,
+            data:       { orgLoginID: orgLoginID, loginID: $('#loginID').val(), firstName: $('#firstName').val(), lastName: $('#lastName').val(), privilegeID: $('#privilegeID').val(), emailAddressForTermsTool: $('#emailAddressForTermsTool').val() },
+            success:    function(html) { 
+                updateUserList();
+                window.parent.tb_remove();
+            }
+        });
+    }
+}
 
-
-
-
- function submitUserData(orgLoginID){
-	$.ajax({
-          type:       "POST",
-          url:        "ajax_processing.php?action=submitUserData",
-          cache:      false,
-          data:       { orgLoginID: orgLoginID, loginID: $('#loginID').val(), firstName: $('#firstName').val(), lastName: $('#lastName').val(), privilegeID: $('#privilegeID').val(), emailAddressForTermsTool: $('#emailAddressForTermsTool').val() },
-          success:    function(html) { 
-          updateUserList();
-          window.parent.tb_remove();
-          }
-       });
-
- }
-
-
+// Validate user form
+function validateUserForm() {
+    if($("#loginID").val() == ''){
+        $("#span_errors").html('Error - Please add a Login ID for the user');
+        $("#loginID").focus();
+        return false;
+    }else{
+        return true;
+    }
+}
 
  function submitExpressionType(){
 	$.ajax({
@@ -209,9 +227,9 @@
 
  function deleteData(tableName, deleteID){
  
- 	if (confirm("Do you really want to delete this data?") == true) {
+ 	if (confirm(_("Do you really want to delete this data?")) == true) {
 
-	       $('#span_' + tableName + "_response").html('<img src = "images/circle.gif">&nbsp;&nbsp;Processing...');
+	       $('#span_' + tableName + "_response").html("<img src = 'images/circle.gif'>&nbsp;&nbsp;"+_("Processing..."));
 	       $.ajax({
 		  type:       "GET",
 		  url:        "ajax_processing.php",
@@ -234,9 +252,9 @@
 
  function deleteUser(loginID){
  
- 	if (confirm("Do you really want to delete this user?") == true) {
+ 	if (confirm(_("Do you really want to delete this user?")) == true) {
 
-	       $('#span_User_response').html('<img src = "images/circle.gif">&nbsp;&nbsp;Processing...');
+	       $('#span_User_response').html("<img src = 'images/circle.gif'>&nbsp;&nbsp;"+_("Processing..."));
 	       $.ajax({
 		  type:       "GET",
 		  url:        "ajax_processing.php",
@@ -260,9 +278,9 @@
 
  function deleteExpressionType(deleteID){
  
- 	if (confirm("Do you really want to delete this expression type?  Any associated Qualifiers will be deleted as well.") == true) {
+ 	if (confirm(_("Do you really want to delete this expression type?  Any associated Qualifiers will be deleted as well.")) == true) {
 
-	       $("#span_ExpressionType_response").html('<img src = "images/circle.gif">&nbsp;&nbsp;Processing...');
+	       $("#span_ExpressionType_response").html("<img src='images/circle.gif'>&nbsp;&nbsp;"+_("Processing..."));
 	       $.ajax({
 		  type:       "GET",
 		  url:        "ajax_processing.php",
@@ -287,9 +305,9 @@
 
  function deleteQualifier(deleteID){
  
- 	if (confirm("Do you really want to delete this data?") == true) {
+ 	if (confirm(_("Do you really want to delete this data?")) == true) {
 
-	       $("#span_Qualifier_response").html('<img src = "images/circle.gif">&nbsp;&nbsp;Processing...');
+	       $("#span_Qualifier_response").html("<img src = 'images/circle.gif'>&nbsp;&nbsp;"+_("Processing..."));
 	       $.ajax({
 		  type:       "GET",
 		  url:        "ajax_processing.php",
@@ -311,7 +329,7 @@
   
  
 function showAdd(tableName){
-       $('#span_new' + tableName).html("<input type='text' name='new" + tableName + "' id='new" + tableName + "' class='adminAddInput' />  <a href='javascript:addData(\"" + tableName + "\");'>add</a>");
+       $('#span_new' + tableName).html("<input type='text' name='new" + tableName + "' id='new" + tableName + "' class='adminAddInput' />  <a href='javascript:addData(\"" + tableName + "\");'>"+_("add")+"</a>");
 
        //attach enter key event to new input and call add data when hit
        $('#new' + tableName).keyup(function(e) {
